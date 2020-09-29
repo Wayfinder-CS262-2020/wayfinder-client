@@ -6,9 +6,14 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
+
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+
 import Header from "./components/header";
 import Content from "./components/content";
-import LoginScreen from "./components/loginScreen";
+
+import Navigator from './routes/homeStack';
 
 export default function App() {
   return (
@@ -17,13 +22,21 @@ export default function App() {
         Keyboard.dismiss();
       }}
     >
-      <View style={styles.container}>
-        {/* <Header /> */}
-        <View style={styles.content}>
-          {/* <Content/> */}
-          <LoginScreen />
-        </View>
+
+      <NavigationContainer>
+        <Navigator />
+      </NavigationContainer>
+    
+    {/*
+    <View style={styles.container}>
+      Home
+      <View style={styles.content}>
+        Content
+        <LoginScreen />
       </View>
+    </View>
+    */}
+
     </TouchableWithoutFeedback>
   );
 }
