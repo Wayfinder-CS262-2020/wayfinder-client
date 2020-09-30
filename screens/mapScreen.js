@@ -1,5 +1,5 @@
 import React from "react";
-import calvinmap from "../assets/calvin-0.svg";
+import calvinmap from "../assets/calvin-0.jpg";
 import {
   StyleSheet,
   Text,
