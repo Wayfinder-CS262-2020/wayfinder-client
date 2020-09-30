@@ -1,5 +1,3 @@
-
-import { Container } from "@material-ui/core";
 import React from "react";
 import {
   StyleSheet,
@@ -9,7 +7,6 @@ import {
   Dimensions,
   Pressable,
 } from "react-native";
-import { TouchableHighlight } from "react-native-gesture-handler";
 import ImageZoom from 'react-native-image-pan-zoom';
 
 export default function mapScreen({ navigation }) {
@@ -34,7 +31,7 @@ export default function mapScreen({ navigation }) {
                     { rotateZ: "330deg" },
                     ]
                 }]}
-                onPress={() => navigation.navigate('Login')}
+                onPress={() => navigation.navigate('Interior', 'SB')}
                 hitSlop={0}
                 pressRetentionOffset={0}
             >
