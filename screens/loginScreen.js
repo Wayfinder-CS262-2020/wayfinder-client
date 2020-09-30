@@ -9,6 +9,7 @@ import {
   TextInput,
   TouchableOpacity,
   Button,
+  ScrollView,
 } from "react-native";
 import { TouchableHighlight } from "react-native-gesture-handler";
 
@@ -17,59 +18,70 @@ import { TouchableHighlight } from "react-native-gesture-handler";
 export default function LoginScreen({ navigation }) {
   return (
     /* Background */
-    <View style={styles.container}>
-      <Image
-        source={require("../assets/wayfinder-logo.png")}
-        style={styles.image}
-      />
-      <Text style={styles.text}>Wayfinder</Text>
+    <ScrollView style={styles.container}>
+      <View style={styles.centereverything}>
+        <Image
+          source={require("../assets/wayfinder-logo.png")}
+          style={styles.image}
+        />
+        <Text style={styles.text}>Wayfinder</Text>
 
-      {/* Username input */}
-      <View style={styles.uname}>
-        <TextInput
-          style={styles.input}
-          placeholder="Username or u@Calvin"
-          placeholderTextColor="#C4C4C4"
-        ></TextInput>
-      </View>
+        {/* Username input */}
+        <View style={styles.uname}>
+          <TextInput
+            style={styles.input}
+            placeholder="Username or u@Calvin"
+            placeholderTextColor="#C4C4C4"
+          ></TextInput>
+        </View>
 
-      {/* Password */}
-      <View style={styles.pswd}>
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          placeholderTextColor="#C4C4C4"
-        ></TextInput>
-      </View>
+        {/* Password */}
+        <View style={styles.pswd}>
+          <TextInput
+            style={styles.input}
+            placeholder="Password"
+            placeholderTextColor="#C4C4C4"
+          ></TextInput>
+        </View>
 
-      {/* Login Button */}
-      <View styles={styles.loginview}>
-        <TouchableOpacity style={styles.loginbutton} onPress={() => navigation.navigate('Map')}>
-          <Text styles={styles.logintext}>LOGIN</Text>
-        </TouchableOpacity>
-      </View>
+        {/* Login Button */}
+        <View styles={styles.loginview}>
+          <TouchableOpacity
+            style={styles.loginbutton}
+            onPress={() => navigation.navigate("Map")}
+          >
+            <Text styles={styles.logintext}>LOGIN</Text>
+          </TouchableOpacity>
+        </View>
 
-      {/* guest login */}
-      <View style={styles.guest}>
-        <TouchableOpacity style={styles.guestbutton}>
-          <Text style={styles.guesttext}>Continue as guest</Text>
-        </TouchableOpacity>
+        {/* guest login */}
+        <View style={styles.guest}>
+          <TouchableOpacity style={styles.guestbutton}>
+            <Text style={styles.guesttext}>Continue as guest</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#2D2D2D",
+    // position: "absolute",
+    flex: 1,
+    // justifyContent: "center",
+    // alignItems: "center",
+  },
+  centereverything: {
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 75,
   },
   image: {
-    width: "25%",
-    height: "25%",
+    width: 4156 * 0.05,
+    height: 4156 * 0.05,
     paddingVertical: 20,
+    marginTop: 50,
   },
   text: {
     color: "#CBCBCB",
@@ -111,7 +123,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
     paddingTop: 15,
     paddingBottom: 15,
-    // paddingHorizontal: 110,
     paddingStart: 116,
   },
   logintext: {
