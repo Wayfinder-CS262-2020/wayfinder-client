@@ -73,7 +73,7 @@ export default function interiorScreen({ navigation }) {
 const styles = StyleSheet.create({
   buttonContainer: {
     marginLeft: Dimensions.get("window").width * 0.75,
-    marginTop: Dimensions.get("window").width * 1.4,
+    marginTop: Dimensions.get("window").height * 0.7,
     // flexDirection: "row",
     justifyContent: "space-around",
     position: "absolute",

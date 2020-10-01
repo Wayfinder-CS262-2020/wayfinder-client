@@ -34,7 +34,8 @@ export default function HomeStack() {
         name="Interior"
         component={InteriorScreen}
         options={{
-          title: "",
+          // TODO: Get title to update dynamically with whatever building is being displayed
+          title: "Science Building",
           headerTransparent: true,
           headerBackImage: () => <Icon name="arrow-back" color="#97282C" />,
         }}

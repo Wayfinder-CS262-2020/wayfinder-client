@@ -22,10 +22,12 @@
     "react-native-elements": "^2.3.2",
     "react-native-gesture-handler": "~1.8.0",
     "react-native-image-pan-zoom": "^2.1.12",
+    "react-native-maps": "^0.27.1",
     "react-native-pdf": "^6.2.1",
     "react-native-reanimated": "~1.13.1",
     "react-native-safe-area-context": "~3.1.8",
     "react-native-screens": "~2.11.0",
+    "react-native-view-editor": "^1.1.0",
     "react-native-web": "~0.13.14",
     "react-navigation": "^4.4.1",
     "rn-fetch-blob": "^0.12.0"
