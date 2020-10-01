@@ -45,11 +45,12 @@ export default function mapScreen({ navigation }) {
 const styles = StyleSheet.create({
   main: {
     flexDirection: "column",
-    alignContent: "flex-start",
+    alignContent: "space-around",
   },
   map: {
     width: 1700,
     height: 2200,
+    zIndex: 0,
   },
   press: {
     width: 220 * 1.2,

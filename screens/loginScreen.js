@@ -1,6 +1,7 @@
 import { capitalize, Input } from "@material-ui/core";
 import { Navigation } from "@material-ui/icons";
 import React from "react";
+import { globalStyles } from "../styles/global";
 import {
   StyleSheet,
   Text,
@@ -29,16 +30,16 @@ export default function LoginScreen({ navigation }) {
         {/* Username input */}
         <View style={styles.uname}>
           <TextInput
-            style={styles.input}
+            style={globalStyles.input}
             placeholder="Username or u@Calvin"
             placeholderTextColor="#C4C4C4"
           ></TextInput>
         </View>
 
-        {/* Password */}
+        {/* Password input*/}
         <View style={styles.pswd}>
           <TextInput
-            style={styles.input}
+            style={globalStyles.input}
             placeholder="Password"
             placeholderTextColor="#C4C4C4"
           ></TextInput>
@@ -89,20 +90,7 @@ const styles = StyleSheet.create({
     fontFamily: "acumin-pro,sans-serif",
     fontWeight: "400",
   },
-  input: {
-    borderRadius: 35,
-    borderColor: "#C4C4C4",
-    backgroundColor: "#2D2D2D",
-    borderWidth: 1,
-    paddingHorizontal: 30,
-    marginTop: 20,
-    maxWidth: 275,
-    minWidth: 275,
-    fontSize: 18,
-    paddingTop: 15,
-    paddingBottom: 15,
-    color: "#C4C4C4",
-  },
+
   uname: {
     backgroundColor: "#2D2D2D",
     alignItems: "center",

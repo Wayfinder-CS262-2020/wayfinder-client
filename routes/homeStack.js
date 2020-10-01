@@ -8,6 +8,9 @@ import LoginScreen from "../screens/loginScreen";
 import MapScreen from "../screens/mapScreen";
 import InteriorScreen from "../screens/interiorScreen";
 
+import { Button } from "react-native";
+import { Icon } from "react-native-elements";
+
 const Stack = createStackNavigator();
 export default function HomeStack() {
   return (
@@ -24,14 +27,17 @@ export default function HomeStack() {
         name="Map"
         component={MapScreen}
         options={{
-          title: "Map Screen",
           headerShown: false,
         }}
       />
       <Stack.Screen
         name="Interior"
         component={InteriorScreen}
-        options={{ title: "Interior Screen", headerShown: false }}
+        options={{
+          title: "",
+          headerTransparent: true,
+          headerBackImage: () => <Icon name="arrow-back" color="#97282C" />,
+        }}
       />
     </Stack.Navigator>
   );
