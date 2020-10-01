@@ -1,4 +1,5 @@
 import React from "react";
+import calvinmap from "../assets/calvin-0.jpg";
 import {
   StyleSheet,
   Text,
@@ -6,64 +7,159 @@ import {
   Image,
   Dimensions,
   Pressable,
+  TextInput,
+  ImageBackground,
+  ScrollView,
+  TouchableOpacity,
 } from "react-native";
-import ImageZoom from 'react-native-image-pan-zoom';
+import { SearchBar, Icon } from "react-native-elements";
+import ImageZoom from "react-native-image-pan-zoom";
+import MapView from "expo";
+import { globalStyles } from "../styles/global";
 
 export default function mapScreen({ navigation }) {
+  // FYI, I had to wrap the ImageZoom in an ImageBackground to be able to
+  // render things on top of it. The ScrollView is so the input/search box doesn't hike up the map
   return (
-    <View style={styles.main}>
+    <ScrollView style={styles.main}>
+      <ImageBackground style={styles.imageViewWrapper}>
+        {/* Footer for search bar and buttons */}
+        <View style={styles.footer}>
+          {/* Search Bar */}
+          <TextInput
+            style={styles.searchBar}
+            placeholder="Enter a classroom..."
+            placeholderTextColor="#C4C4C4"
+          ></TextInput>
+
+          {/* Search Button */}
+          <TouchableOpacity placeholder="Search" style={styles.searchButton}>
+            <Icon name="send" />
+          </TouchableOpacity>
+        </View>
+
+        {/* ImageZoom for the map background */}
         <ImageZoom
-            cropWidth={Dimensions.get('window').width}
-            cropHeight={Dimensions.get('window').height}
-            imageWidth={1700}
-            imageHeight={2200}
-            panToMove={true}
-            pinchToZoom={true}
-            enableCenterFocus={false}
-            minScale={0.25}
+          cropWidth={Dimensions.get("window").width}
+          cropHeight={Dimensions.get("window").height}
+          imageWidth={1700}
+          imageHeight={2200}
+          panToMove={true}
+          pinchToZoom={true}
+          enableCenterFocus={false}
+          minScale={0.25}
         >
-            <Image style={styles.map}
-                source={require("../assets/calvin-0.jpg")}
-            />
-            <Pressable
-                style={[styles.press, {
-                    transform: [
-                    { rotateZ: "330deg" },
-                    ]
-                }]}
-                onPress={() => navigation.navigate('Interior', 'SB')}
-                hitSlop={0}
-                pressRetentionOffset={0}
-            >
-                <Image 
-                    style={styles.sb}
-                    source={require('../assets/SB-0.jpg')}
-                />
-            </Pressable>
+          <Image style={styles.map} source={calvinmap} />
+          <Pressable
+            style={[
+              styles.press,
+              {
+                transform: [{ rotateZ: "330deg" }],
+              },
+            ]}
+            onPress={() => navigation.navigate("Interior", "SB")}
+            hitSlop={0}
+            pressRetentionOffset={0}
+          >
+            <Image style={styles.sb} source={require("../assets/SB-0.jpg")} />
+          </Pressable>
         </ImageZoom>
-    </View>
+      </ImageBackground>
+
+      {/* The_Dunco: Experimenting around with react-native-apps, it gets into some really wonky stuff.
+      Expo hides a lot of the files that you need to add your API key and stuff like that. */}
+      {/* <MapView
+        style={{
+          flex: 1,
+          ...StyleSheet.absoluteFillObject,
+          position: "absolute",
+        }}
+        region={{
+          latitude: 42.882004,
+          longitude: 74.582748,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        }}
+        showsUserLocation={true}
+      /> */}
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-    main: {
-        flexDirection: 'column',
-        alignContent: 'flex-start',
-    },
-    map: {
-        width: 1700,
-        height: 2200,
-    },
-    press: {
-        width: 220 * 1.2,
-        height: 170 * 1.2,
-        marginLeft: 430,
-        marginTop: 1325,
-        position: 'absolute',
-    },
-    sb: {
-        width: 220 * 1.2,
-        height: 170 * 1.2,
-        opacity: 0.8,
-    }
-})
+  main: {
+    flex: 1,
+    flexDirection: "row",
+    alignContent: "space-around",
+  },
+  imageViewWrapper: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "center",
+    width: "100%",
+    height: "100%",
+  },
+  map: {
+    width: 1700,
+    height: 2200,
+    zIndex: 0,
+  },
+  press: {
+    width: 220 * 1.2,
+    height: 170 * 1.2,
+    marginLeft: 430,
+    marginTop: 1325,
+    position: "absolute",
+  },
+  sb: {
+    width: 220 * 1.2,
+    height: 170 * 1.2,
+    opacity: 0.8,
+  },
+  footer: {
+    backgroundColor: "#2D2D2D",
+    color: "#2D2D2D",
+    // marginTop: Dimensions.get("window").height * -0.06,
+    // marginLeft: Dimensions.get("window").width * 2,
+    bottom: 0,
+    zIndex: 5,
+    position: "absolute",
+    maxWidth: "100%",
+    minWidth: "100%",
+    justifyContent: "flex-start",
+    flexDirection: "row",
+  },
+  searchBar: {
+    borderRadius: 35,
+    borderColor: "#C4C4C4",
+    backgroundColor: "#2D2D2D",
+    borderWidth: 1,
+    paddingHorizontal: 30,
+    maxWidth: 220,
+    minWidth: 220,
+    minHeight: 40,
+    maxHeight: 40,
+    fontSize: 16,
+    backgroundColor: "#2D2D2D",
+    marginTop: 25,
+    marginBottom: 25,
+    marginHorizontal: 10,
+    // paddingTop: 5,
+    // paddingBottom: 5,
+    color: "#C4C4C4",
+  },
+  searchButton: {
+    backgroundColor: "#f0cb02",
+    borderWidth: 1,
+    borderRadius: 35,
+    borderColor: "#f0cb02",
+    maxWidth: 100,
+    minWidth: 100,
+    marginTop: 25,
+    marginBottom: 25,
+    paddingTop: 7,
+    marginHorizontal: 10,
+    // paddingBottom: 15,
+    // paddingStart: 116,
+  },
+});
