@@ -11,15 +11,19 @@ import {
   ImageBackground,
   ScrollView,
   TouchableOpacity,
+  PermissionsAndroid,
 } from "react-native";
 import { SearchBar, Icon } from "react-native-elements";
 import ImageZoom from "react-native-image-pan-zoom";
 import MapView from "expo";
 import { globalStyles } from "../styles/global";
+import gpsAttempt from "../components/gpsAttempt";
 
 export default function mapScreen({ navigation }) {
   // FYI, I had to wrap the ImageZoom in an ImageBackground to be able to
-  // render things on top of it. The ScrollView is so the input/search box doesn't hike up the map
+  // render things on top of it. The ScrollView is so the input/search box doesn't hike up the map  
+  gpsAttempt();
+  
   return (
     <ScrollView style={styles.main}>
       <ImageBackground style={styles.imageViewWrapper}>
