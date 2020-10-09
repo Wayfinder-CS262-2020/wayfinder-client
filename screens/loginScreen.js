@@ -79,15 +79,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   image: {
-    width: 4156 * 0.05,
-    height: 4156 * 0.05,
+    width: 4156 * 0.03,
+    height: 4156 * 0.03,
     paddingVertical: 20,
-    marginTop: 50,
+    marginTop: 80,
   },
   text: {
     color: "#CBCBCB",
     fontSize: 50,
-    fontFamily: "acumin-pro,sans-serif",
+    fontFamily: "lusitana-bold",
     fontWeight: "400",
   },
 
