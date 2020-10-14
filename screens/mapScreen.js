@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import calvinmap from "../assets/calvin-0.jpg";
 import {
   StyleSheet,
@@ -11,21 +11,52 @@ import {
   ImageBackground,
   ScrollView,
   TouchableOpacity,
-  PermissionsAndroid,
+  ActivityIndicator,
 } from "react-native";
 import { SearchBar, Icon } from "react-native-elements";
 import ImageZoom from "react-native-image-pan-zoom";
 import MapView from "expo";
 import { globalStyles } from "../styles/global";
-import gpsAttempt from "../components/gpsAttempt";
 
 export default function mapScreen({ navigation }) {
   // FYI, I had to wrap the ImageZoom in an ImageBackground to be able to
-  // render things on top of it. The ScrollView is so the input/search box doesn't hike up the map  
-  gpsAttempt();
-  
+  // render things on top of it. The ScrollView is so the input/search box doesn't hike up the map
+  const [pos, setPos] = useState({});
+  const [posAvailable, setPosAvailable] = useState(false);
+  const [pointX, setPointX] = useState(-1);
+  const [pointY, setPointY] = useState(-1);
+  const [isLoading, setLoading] = useState(true);
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setPos(position);
+        setPosAvailable(true);
+        console.log(pos);
+      },
+      (error) => console.log(error.code, error.message),
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000, showLocationDialog: true }
+    );
+
+    if (posAvailable) {
+      let lat = 0.003;
+      let long = 0.003;
+      // let lat = Math.abs(pos.coords.latitude - 42.935352);
+      // let long = pos.coords.longitude + 85.590951;
+
+      if (lat >= 0 && lat <= 0.006573 && long >= 0 && long <= 0.006075) {
+        setPointX(long * 279835.391);
+        setPointY(lat * 334702.571);
+        setLoading(false);
+        console.log(pointX);
+        console.log(pointY);
+      }
+    };
+  }, [posAvailable]);
+
   return (
     <ScrollView style={styles.main}>
+      {isLoading ? <ActivityIndicator/> : (
       <ImageBackground style={styles.imageViewWrapper}>
         {/* Footer for search bar and buttons */}
         <View style={styles.footer}>
@@ -67,25 +98,35 @@ export default function mapScreen({ navigation }) {
           >
             <Image style={styles.sb} source={require("../assets/SB-0.jpg")} />
           </Pressable>
+          
+          <View style={{
+            marginTop: pointY,
+            marginLeft: pointX,
+            backgroundColor: '#ff0000',
+            width: 20,
+            height: 20,
+            position: 'absolute',
+          }}/>
         </ImageZoom>
       </ImageBackground>
 
-      {/* The_Dunco: Experimenting around with react-native-apps, it gets into some really wonky stuff.
-      Expo hides a lot of the files that you need to add your API key and stuff like that. */}
-      {/* <MapView
-        style={{
-          flex: 1,
-          ...StyleSheet.absoluteFillObject,
-          position: "absolute",
-        }}
-        region={{
-          latitude: 42.882004,
-          longitude: 74.582748,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        }}
-        showsUserLocation={true}
-      /> */}
+      // {/* The_Dunco: Experimenting around with react-native-apps, it gets into some really wonky stuff.
+      // Expo hides a lot of the files that you need to add your API key and stuff like that. */}
+      // {/* <MapView
+      //   style={{
+      //     flex: 1,
+      //     ...StyleSheet.absoluteFillObject,
+      //     position: "absolute",
+      //   }}
+      //   region={{
+      //     latitude: 42.882004,
+      //     longitude: 74.582748,
+      //     latitudeDelta: 0.0922,
+      //     longitudeDelta: 0.0421,
+      //   }}
+      //   showsUserLocation={true}
+      // /> */}
+      )}
     </ScrollView>
   );
 }
