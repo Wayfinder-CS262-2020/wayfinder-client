@@ -12,6 +12,7 @@ import {
   ScrollView,
   TouchableOpacity,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 import { SearchBar, Icon } from "react-native-elements";
 import ImageZoom from "react-native-image-pan-zoom";
@@ -23,8 +24,8 @@ export default function mapScreen({ navigation }) {
   // render things on top of it. The ScrollView is so the input/search box doesn't hike up the map
   const [pos, setPos] = useState({});
   const [posAvailable, setPosAvailable] = useState(false);
-  const [pointX, setPointX] = useState(-1);
-  const [pointY, setPointY] = useState(-1);
+  const [pointX, setPointX] = useState(-100);
+  const [pointY, setPointY] = useState(-100);
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -50,7 +51,11 @@ export default function mapScreen({ navigation }) {
         setLoading(false);
         console.log(pointX);
         console.log(pointY);
+      } else {
+        setLoading(false);
+        Alert.alert("Out of bounds.");
       }
+
     };
   }, [posAvailable]);
 
