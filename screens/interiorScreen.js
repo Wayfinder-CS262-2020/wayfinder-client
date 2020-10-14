@@ -18,6 +18,7 @@ const assets = require("../assets/assets.js");
 export default function interiorScreen({ navigation }) {
   const [currentFloor, setCurrentFloor] = useState("SB0");
 
+  // Function to change map floor up
   const goUp = function () {
     var buildingCode = currentFloor.substring(0, 2);
     var floorStr = currentFloor.substring(2, 3);
@@ -29,6 +30,7 @@ export default function interiorScreen({ navigation }) {
     }
   };
 
+  // Function to change map floor down
   const goDown = function () {
     var buildingCode = currentFloor.substring(0, 2);
     var floorStr = currentFloor.substring(2, 3);
@@ -41,6 +43,7 @@ export default function interiorScreen({ navigation }) {
   };
 
   return (
+    // Main interior screen
     <View style={{ alignContent: "space-around" }}>
       <ImageZoom
         cropWidth={Dimensions.get("window").width}
@@ -54,6 +57,7 @@ export default function interiorScreen({ navigation }) {
       >
         <Image source={assets[currentFloor]} />
       </ImageZoom>
+      {/* Buttons for up/down floor*/}
       <View style={styles.buttonContainer}>
         <View style={styles.button}>
           <TouchableOpacity onPress={() => goUp()}>
