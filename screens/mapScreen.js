@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import calvinmap from "../assets/calvin-0.jpg";
+import calvinmap from "../assets/calvin-0-cropped.jpg";
 import {
   StyleSheet,
   Text,
@@ -39,13 +39,13 @@ export default function mapScreen({ navigation }) {
     );
 
     if (posAvailable) {
-      let lat = 0.003;
-      let long = 0.003;
-      // let lat = Math.abs(pos.coords.latitude - 42.935352);
-      // let long = pos.coords.longitude + 85.590951;
+      // let lat = 0.006500;
+      // let long = 0.006000;
+      let lat = Math.abs(pos.coords.latitude - 42.935352);
+      let long = pos.coords.longitude + 85.590951;
 
       if (lat >= 0 && lat <= 0.006573 && long >= 0 && long <= 0.006075) {
-        setPointX(long * 279835.391);
+        setPointX(long * 219686.6);
         setPointY(lat * 334702.571);
         setLoading(false);
         console.log(pointX);
@@ -77,7 +77,7 @@ export default function mapScreen({ navigation }) {
         <ImageZoom
           cropWidth={Dimensions.get("window").width}
           cropHeight={Dimensions.get("window").height}
-          imageWidth={1700}
+          imageWidth={1444}
           imageHeight={2200}
           panToMove={true}
           pinchToZoom={true}
@@ -145,14 +145,14 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   map: {
-    width: 1700,
+    width: 1444,
     height: 2200,
     zIndex: 0,
   },
   press: {
     width: 220 * 1.2,
     height: 170 * 1.2,
-    marginLeft: 430,
+    marginLeft: 300,
     marginTop: 1325,
     position: "absolute",
   },
