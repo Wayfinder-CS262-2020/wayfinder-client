@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import calvinmap from "../assets/calvin-0-cropped.jpg";
+import calvinmap from "../assets/calvin-map.svg";
+import Image from 'react-native-remote-svg';
+
 import {
   StyleSheet,
   Text,
   View,
-  Image,
   Dimensions,
   Pressable,
   TextInput,
@@ -18,6 +19,8 @@ import { SearchBar, Icon } from "react-native-elements";
 import ImageZoom from "react-native-image-pan-zoom";
 import MapView from "expo";
 import { globalStyles } from "../styles/global";
+import SvgUri from 'react-native-svg-uri';
+
 
 export default function mapScreen({ navigation }) {
   // FYI, I had to wrap the ImageZoom in an ImageBackground to be able to
