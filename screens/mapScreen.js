@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import calvinmap from "../assets/calvin-0-cropped.jpg";
+import calvinmap from "../assets/calvin-map-01.jpg";
 import {
   StyleSheet,
   Text,
@@ -19,6 +19,9 @@ import ImageZoom from "react-native-image-pan-zoom";
 import MapView from "expo";
 import { globalStyles } from "../styles/global";
 
+  const imageWidth = 4285;
+  const imageHeight = 3001;
+
 export default function mapScreen({ navigation }) {
   // FYI, I had to wrap the ImageZoom in an ImageBackground to be able to
   // render things on top of it. The ScrollView is so the input/search box doesn't hike up the map
@@ -26,7 +29,8 @@ export default function mapScreen({ navigation }) {
   const [posAvailable, setPosAvailable] = useState(false);
   const [pointX, setPointX] = useState(-100);
   const [pointY, setPointY] = useState(-100);
-  const [isLoading, setLoading] = useState(true);
+  const [isLoading, setLoading] = useState(false);
+
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -42,12 +46,21 @@ export default function mapScreen({ navigation }) {
     if (posAvailable) {
       // let lat = 0.006500;
       // let long = 0.006000;
-      let lat = Math.abs(pos.coords.latitude - 42.935352);
-      let long = pos.coords.longitude + 85.590951;
 
-      if (lat >= 0 && lat <= 0.006573 && long >= 0 && long <= 0.006075) {
-        setPointX(long * 219686.6);
-        setPointY(lat * 334702.571);
+      // Top left corner coordinates
+      let absLat = 42.937980
+      let absLon =  -85.593117
+      // Bottom right corner coordinates
+      let maxLat = 42.926039
+      let maxLon = -85.570271
+
+      let lat = Math.abs(pos.coords.latitude - absLat);
+      let long = pos.coords.longitude - absLon;
+      
+
+      if (lat >= 0 && lat <= Math.abs(absLat-maxLat) && long >= 0 && long <= Math.abs(absLon-maxLon)) {
+        setPointX(long * imageWidth / Math.abs(absLon-maxLon));
+        setPointY(lat * imageHeight / Math.abs(absLat-maxLat));
         setLoading(false);
         console.log(pointX);
         console.log(pointY);
@@ -60,9 +73,13 @@ export default function mapScreen({ navigation }) {
   }, [posAvailable]);
 
   return (
-    <ScrollView style={styles.main}>
-      {isLoading ? <ActivityIndicator/> : (
-      <ImageBackground style={styles.imageViewWrapper}>
+    <View style={styles.main}>
+      {isLoading ? (
+      <View>
+        <ActivityIndicator animating={true} />
+      </View>
+      ) : (
+      <View>
         {/* Footer for search bar and buttons */}
         <View style={styles.footer}>
           {/* Search Bar */}
@@ -82,12 +99,12 @@ export default function mapScreen({ navigation }) {
         <ImageZoom
           cropWidth={Dimensions.get("window").width}
           cropHeight={Dimensions.get("window").height}
-          imageWidth={1444}
-          imageHeight={2200}
+          imageWidth={imageWidth}
+          imageHeight={imageHeight}
           panToMove={true}
           pinchToZoom={true}
           enableCenterFocus={false}
-          minScale={0.25}
+          minScale={0.15}
         >
           <Image style={styles.map} source={calvinmap} />
           <Pressable
@@ -113,7 +130,7 @@ export default function mapScreen({ navigation }) {
             position: 'absolute',
           }}/>
         </ImageZoom>
-      </ImageBackground>
+      </View>
 
       // {/* The_Dunco: Experimenting around with react-native-apps, it gets into some really wonky stuff.
       // Expo hides a lot of the files that you need to add your API key and stuff like that. */}
@@ -132,7 +149,7 @@ export default function mapScreen({ navigation }) {
       //   showsUserLocation={true}
       // /> */}
       )}
-    </ScrollView>
+    </View>
   );
 }
 
@@ -141,6 +158,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     alignContent: "space-around",
+    backgroundColor: '#FFFFFF'
   },
   imageViewWrapper: {
     flex: 1,
@@ -150,21 +168,21 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   map: {
-    width: 1444,
-    height: 2200,
+    width: imageWidth*1,
+    height: imageHeight*1,
     zIndex: 0,
   },
   press: {
     width: 220 * 1.2,
     height: 170 * 1.2,
-    marginLeft: 300,
-    marginTop: 1325,
+    marginLeft: 718,
+    marginTop: 1665,
     position: "absolute",
   },
   sb: {
-    width: 220 * 1.2,
-    height: 170 * 1.2,
-    opacity: 0.8,
+    width: 220 * 1.02,
+    height: 170 * 1.02,
+    opacity: 0.5,
   },
   footer: {
     backgroundColor: "#2D2D2D",
