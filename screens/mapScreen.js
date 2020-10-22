@@ -17,9 +17,8 @@ import {
 } from "react-native";
 import { SearchBar, Icon } from "react-native-elements";
 import ImageZoom from "react-native-image-pan-zoom";
-import MapView from "expo";
 import { globalStyles } from "../styles/global";
-import SvgUri from 'react-native-svg-uri';
+import MapComponent from "../components/map";
 
 
 export default function mapScreen({ navigation }) {
@@ -83,6 +82,7 @@ export default function mapScreen({ navigation }) {
 
         {/* ImageZoom for the map background */}
         <ImageZoom
+
           cropWidth={Dimensions.get("window").width}
           cropHeight={Dimensions.get("window").height}
           imageWidth={1444}
@@ -92,7 +92,7 @@ export default function mapScreen({ navigation }) {
           enableCenterFocus={false}
           minScale={0.25}
         >
-          <Image style={styles.map} source={calvinmap} />
+          <MapComponent/>
           <Pressable
             style={[
               styles.press,
