@@ -10,6 +10,7 @@ import InteriorScreen from "../screens/interiorScreen";
 
 import { Button } from "react-native";
 import { Icon } from "react-native-elements";
+import LoadingScreen from "../screens/loadingSceen";
 
 const Stack = createStackNavigator();
 export default function HomeStack() {
@@ -38,6 +39,13 @@ export default function HomeStack() {
           title: "Science Building",
           headerTransparent: true,
           headerBackImage: () => <Icon name="arrow-back" color="#97282C" />,
+        }}
+      />
+      <Stack.Screen
+        name="Loading"
+        component={LoadingScreen}
+        options={{
+          headerShown: false,
         }}
       />
     </Stack.Navigator>

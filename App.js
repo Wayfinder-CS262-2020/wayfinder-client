@@ -18,6 +18,11 @@ import Content from "./components/content";
 import Navigator from "./routes/homeStack";
 import { AppLoading } from "expo";
 
+import *  as firebase from 'firebase';
+import { firebaseConfig } from './config';
+
+firebase.initializeApp(firebaseConfig);
+
 const getFonts = () =>
   Font.loadAsync({
     "lusitana-bold": require("./assets/fonts/Lusitana/Lusitana-Bold.ttf"),
