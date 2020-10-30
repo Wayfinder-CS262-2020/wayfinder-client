@@ -89,7 +89,15 @@ export default function mapScreen({ navigation }) {
           enableCenterFocus={false}
           minScale={0.25}
         >
+          
+
           <Image style={styles.map} source={calvinmap} />
+
+          <Image style={{
+            backgroundColor: 'transparent',
+            position: 'absolute'
+          }} source={require("../assets/paths/0-7.png")}/>
+
           <Pressable
             style={[
               styles.press,
