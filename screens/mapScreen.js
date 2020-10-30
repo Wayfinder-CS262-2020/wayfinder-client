@@ -30,6 +30,7 @@ export default function mapScreen({ navigation }) {
   const [pointX, setPointX] = useState(-100);
   const [pointY, setPointY] = useState(-100);
   const [isLoading, setLoading] = useState(false);
+  const [heading, setHeading] = useState(0);
 
 
   useEffect(() => {
@@ -48,20 +49,20 @@ export default function mapScreen({ navigation }) {
       // let long = 0.006000;
 
       // Top left corner coordinates
-      let absLat = 42.937980
-      let absLon =  -85.593117
+      let absLat = 42.937858
+      let absLon =  -85.593565
       // Bottom right corner coordinates
-      let maxLat = 42.926039
-      let maxLon = -85.570271
+      let maxLat = 42.926166
+      let maxLon = -85.570076
 
       let lat = Math.abs(pos.coords.latitude - absLat);
       let long = pos.coords.longitude - absLon;
-      
 
       if (lat >= 0 && lat <= Math.abs(absLat-maxLat) && long >= 0 && long <= Math.abs(absLon-maxLon)) {
         setPointX(long * imageWidth / Math.abs(absLon-maxLon));
         setPointY(lat * imageHeight / Math.abs(absLat-maxLat));
         setLoading(false);
+        setHeading(pos.coords.heading);
         console.log(pointX);
         console.log(pointY);
       } else {
@@ -70,7 +71,8 @@ export default function mapScreen({ navigation }) {
       }
 
     };
-  }, [posAvailable]);
+
+  }, [pos]);
 
   return (
     <View style={styles.main}>
@@ -121,14 +123,16 @@ export default function mapScreen({ navigation }) {
             <Image style={styles.sb} source={require("../assets/SB-0.jpg")} />
           </Pressable>
           
-          <View style={{
-            marginTop: pointY,
-            marginLeft: pointX,
-            backgroundColor: '#ff0000',
-            width: 20,
-            height: 20,
-            position: 'absolute',
-          }}/>
+          <View style={[
+            styles.dot,
+            {
+              marginTop: pointY,
+              marginLeft: pointX,
+              transform: [{ rotateZ: String(heading) + "deg" }]
+            },
+          ]}>
+            <Image style={{ width: 20, height: 20 }} source={require("../assets/wayfinder-logo-yellow.png")} />
+          </View>
         </ImageZoom>
       </View>
 
@@ -183,6 +187,11 @@ const styles = StyleSheet.create({
     width: 220 * 1.02,
     height: 170 * 1.02,
     opacity: 0.5,
+  },
+  dot: {
+    width: 20,
+    height: 20,
+    position: 'absolute',
   },
   footer: {
     backgroundColor: "#2D2D2D",
