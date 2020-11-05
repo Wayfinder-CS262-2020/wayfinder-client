@@ -12,7 +12,7 @@ import {
   ScrollView,
   TouchableOpacity,
   ActivityIndicator,
-  Alert,
+  Alert
 } from "react-native";
 import { SearchBar, Icon } from "react-native-elements";
 import ImageZoom from "react-native-image-pan-zoom";
@@ -31,6 +31,7 @@ export default function mapScreen({ navigation }) {
   const [pointY, setPointY] = useState(-100);
   const [isLoading, setLoading] = useState(false);
   const [heading, setHeading] = useState(0);
+  const debug = false;
 
 
   useEffect(() => {
@@ -38,7 +39,7 @@ export default function mapScreen({ navigation }) {
       (position) => {
         setPos(position);
         setPosAvailable(true);
-        console.log(pos);
+        debug && console.log(pos);
       },
       (error) => console.log(error.code, error.message),
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000, showLocationDialog: true }
@@ -63,8 +64,8 @@ export default function mapScreen({ navigation }) {
         setPointY(lat * imageHeight / Math.abs(absLat-maxLat));
         setLoading(false);
         setHeading(pos.coords.heading);
-        console.log(pointX);
-        console.log(pointY);
+        debug && console.log(pointX);
+        debug && console.log(pointY);
       } else {
         setLoading(false);
         Alert.alert("Out of bounds.");
@@ -107,22 +108,23 @@ export default function mapScreen({ navigation }) {
           pinchToZoom={true}
           enableCenterFocus={false}
           minScale={0.15}
-        >
+            >
+          {/* Main map */}
           <Image style={styles.map} source={calvinmap} />
+              
+          {/* Waypoint for Science Building */}
           <Pressable
             style={[
-              styles.press,
-              {
-                transform: [{ rotateZ: "330deg" }],
-              },
+              styles.press
             ]}
             onPress={() => navigation.navigate("Interior", "SB")}
-            hitSlop={0}
-            pressRetentionOffset={0}
+            // hitSlop={0}
+            // pressRetentionOffset={0}
           >
-            <Image style={styles.sb} source={require("../assets/SB-0.jpg")} />
+            <Icon name="location-on" color="#F0CB02"></Icon>
           </Pressable>
           
+          {/* User position (and heading) dot */}
           <View style={[
             styles.dot,
             {
@@ -135,23 +137,6 @@ export default function mapScreen({ navigation }) {
           </View>
         </ImageZoom>
       </View>
-
-      // {/* The_Dunco: Experimenting around with react-native-apps, it gets into some really wonky stuff.
-      // Expo hides a lot of the files that you need to add your API key and stuff like that. */}
-      // {/* <MapView
-      //   style={{
-      //     flex: 1,
-      //     ...StyleSheet.absoluteFillObject,
-      //     position: "absolute",
-      //   }}
-      //   region={{
-      //     latitude: 42.882004,
-      //     longitude: 74.582748,
-      //     latitudeDelta: 0.0922,
-      //     longitudeDelta: 0.0421,
-      //   }}
-      //   showsUserLocation={true}
-      // /> */}
       )}
     </View>
   );
@@ -179,8 +164,8 @@ const styles = StyleSheet.create({
   press: {
     width: 220 * 1.2,
     height: 170 * 1.2,
-    marginLeft: 718,
-    marginTop: 1665,
+    marginLeft: 700,
+    marginTop: 1780,
     position: "absolute",
   },
   sb: {
@@ -238,5 +223,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     // paddingBottom: 15,
     // paddingStart: 116,
+  },
+  waypointMarker: {
+    color: "#F0CB02"
   },
 });
