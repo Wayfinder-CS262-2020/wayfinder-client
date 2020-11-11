@@ -1,6 +1,6 @@
 import { capitalize, Input } from "@material-ui/core";
 import { Navigation } from "@material-ui/icons";
-import React from "react";
+import React, {useState} from "react";
 import { globalStyles } from "../styles/global";
 import {
   StyleSheet,
@@ -11,12 +11,27 @@ import {
   TouchableOpacity,
   Button,
   ScrollView,
+  Alert
 } from "react-native";
 import { TouchableHighlight } from "react-native-gesture-handler";
 
 <link rel="stylesheet" href="https://use.typekit.net/spw7ajb.css"></link>;
 
 export default function LoginScreen({ navigation }) {
+
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  checkCredentials = () => {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|([a-z]+[0-9]+)@calvin.edu)$/;
+    if (re.test(username) && password != ''){
+      navigation.navigate('Map');
+    }else{
+      Alert.alert('Error', 'Invalid credentials', [
+        {text: 'Okay', onPress: () => {} }
+      ]);
+    }
+  };
+
   return (
     /* Background */
     <ScrollView style={styles.container}>
@@ -33,6 +48,8 @@ export default function LoginScreen({ navigation }) {
             style={globalStyles.input}
             placeholder="Username or u@Calvin"
             placeholderTextColor="#C4C4C4"
+            onChangeText={text => setUsername(text)}
+            value={username}
           ></TextInput>
         </View>
 
@@ -42,6 +59,9 @@ export default function LoginScreen({ navigation }) {
             style={globalStyles.input}
             placeholder="Password"
             placeholderTextColor="#C4C4C4"
+            onChangeText={text => setPassword(text)}
+            value={password}
+            secureTextEntry={true}
           ></TextInput>
         </View>
 
@@ -49,7 +69,7 @@ export default function LoginScreen({ navigation }) {
         <View styles={styles.loginview}>
           <TouchableOpacity
             style={styles.loginbutton}
-            onPress={() => navigation.navigate("Map")}
+            onPress={() => checkCredentials()}
           >
             <Text styles={styles.logintext}>LOGIN</Text>
           </TouchableOpacity>
