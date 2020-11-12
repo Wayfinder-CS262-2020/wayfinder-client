@@ -34,6 +34,7 @@ export default function mapScreen({ navigation }) {
   const debug = false;
 
 
+  // Location
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -75,6 +76,9 @@ export default function mapScreen({ navigation }) {
 
   }, [pos]);
 
+  const [searchText] = useState('');
+
+  
   return (
     <View style={styles.main}>
       {isLoading ? (
@@ -90,10 +94,15 @@ export default function mapScreen({ navigation }) {
             style={styles.searchBar}
             placeholder="Enter a classroom..."
             placeholderTextColor="#C4C4C4"
+            value="searchText"
           ></TextInput>
 
           {/* Search Button */}
-          <TouchableOpacity placeholder="Search" style={styles.searchButton}>
+              <TouchableOpacity
+                placeholder="Search"
+                style={styles.searchButton}
+                onPress={() => navigation.navigate("Search")} //TODO: Add ability to pass data to search screen
+          >
             <Icon name="send" />
           </TouchableOpacity>
         </View>
@@ -118,8 +127,6 @@ export default function mapScreen({ navigation }) {
               styles.press
             ]}
             onPress={() => navigation.navigate("Interior", "SB")}
-            // hitSlop={0}
-            // pressRetentionOffset={0}
           >
             <Icon name="location-on" color="#F0CB02"></Icon>
           </Pressable>

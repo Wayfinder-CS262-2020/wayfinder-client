@@ -10,6 +10,7 @@ import InteriorScreen from "../screens/interiorScreen";
 
 import { Button } from "react-native";
 import { Icon } from "react-native-elements";
+import SearchScreen from "../screens/searchScreen";
 
 const Stack = createStackNavigator();
 export default function HomeStack() {
@@ -39,6 +40,10 @@ export default function HomeStack() {
           headerTransparent: true,
           headerBackImage: () => <Icon name="arrow-back" color="#97282C" />,
         }}
+      />
+      <Stack.Screen
+        name="Search"
+        component={SearchScreen}
       />
     </Stack.Navigator>
   );
