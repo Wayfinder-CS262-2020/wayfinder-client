@@ -1,7 +1,5 @@
-import { capitalize, Input } from "@material-ui/core";
-import { Navigation } from "@material-ui/icons";
-import React from "react";
-import { globalStyles } from "../styles/global";
+import React from 'react'
+import { globalStyles } from '../styles/global'
 import {
   StyleSheet,
   Text,
@@ -9,12 +7,11 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
-  Button,
   ScrollView,
-} from "react-native";
-import { TouchableHighlight } from "react-native-gesture-handler";
+} from 'react-native'
 
-<link rel="stylesheet" href="https://use.typekit.net/spw7ajb.css"></link>;
+//eslint ignore
+<link rel="stylesheet" href="https://use.typekit.net/spw7ajb.css"></link>
 
 export default function LoginScreen({ navigation }) {
   return (
@@ -22,7 +19,7 @@ export default function LoginScreen({ navigation }) {
     <ScrollView style={styles.container}>
       <View style={styles.centereverything}>
         <Image
-          source={require("../assets/wayfinder-logo.png")}
+          source={require('../assets/wayfinder-logo.png')}
           style={styles.image}
         />
         <Text style={styles.text}>Wayfinder</Text>
@@ -49,7 +46,7 @@ export default function LoginScreen({ navigation }) {
         <View styles={styles.loginview}>
           <TouchableOpacity
             style={styles.loginbutton}
-            onPress={() => navigation.navigate("Map")}
+            onPress={() => navigation.navigate('Map')}
           >
             <Text styles={styles.logintext}>LOGIN</Text>
           </TouchableOpacity>
@@ -63,20 +60,20 @@ export default function LoginScreen({ navigation }) {
         </View>
       </View>
     </ScrollView>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#2D2D2D",
+    backgroundColor: '#2D2D2D',
     // position: "absolute",
     flex: 1,
     // justifyContent: "center",
     // alignItems: "center",
   },
   centereverything: {
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   image: {
     width: 4156 * 0.03,
@@ -85,27 +82,27 @@ const styles = StyleSheet.create({
     marginTop: 80,
   },
   text: {
-    color: "#CBCBCB",
+    color: '#CBCBCB',
     fontSize: 50,
-    fontFamily: "lusitana-bold",
-    fontWeight: "400",
+    fontFamily: 'lusitana-bold',
+    fontWeight: '400',
   },
 
   uname: {
-    backgroundColor: "#2D2D2D",
-    alignItems: "center",
-    color: "#C4C4C4",
+    backgroundColor: '#2D2D2D',
+    alignItems: 'center',
+    color: '#C4C4C4',
     marginTop: 50,
   },
   pswd: {
-    backgroundColor: "#2D2D2D",
-    alignItems: "center",
+    backgroundColor: '#2D2D2D',
+    alignItems: 'center',
   },
   loginbutton: {
-    backgroundColor: "#f0cb02",
+    backgroundColor: '#f0cb02',
     borderWidth: 1,
     borderRadius: 35,
-    borderColor: "#f0cb02",
+    borderColor: '#f0cb02',
     maxWidth: 275,
     minWidth: 275,
     marginTop: 20,
@@ -115,22 +112,22 @@ const styles = StyleSheet.create({
   },
   logintext: {
     fontSize: 18,
-    color: "#2D2D2D",
-    width: "100%",
+    color: '#2D2D2D',
+    width: '100%',
   },
   loginview: {
-    backgroundColor: "#2D2D2D",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: '#2D2D2D',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   guest: {
     marginTop: 10,
   },
   guestbutton: {
-    backgroundColor: "#2D2D2D",
+    backgroundColor: '#2D2D2D',
     paddingStart: 10,
   },
   guesttext: {
-    color: "#CBCBCB",
+    color: '#CBCBCB',
   },
-});
+})
