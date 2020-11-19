@@ -155,8 +155,6 @@ export default function mapScreen({ navigation }) {
     };
   }
 
-  // Database
-
   return (
     <View style={styles.main}>
       {/* eslint-disable-next-line multiline-ternary */}
@@ -205,7 +203,7 @@ export default function mapScreen({ navigation }) {
             {/* Main map */}
             <Image style={styles.map} source={calvinmap} />
 
-            {/* Waypoint for Science Building */}
+            {/* Waypoint for Searched Waypoint */}
             <Pressable
               style={[
                 styles.waypoint,
