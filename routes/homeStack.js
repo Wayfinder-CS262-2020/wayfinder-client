@@ -7,7 +7,6 @@ import InteriorScreen from "../screens/interiorScreen";
 
 import { Button } from "react-native";
 import { Icon } from "react-native-elements";
-import SearchScreen from "../screens/searchScreen";
 
 const Stack = createStackNavigator();
 export default function HomeStack() {
@@ -28,17 +27,6 @@ export default function HomeStack() {
           headerShown: false,
         }}
       />
-      <Stack.Screen
-        name="Interior"
-        component={InteriorScreen}
-        options={{
-          // TODO: Get title to update dynamically with whatever building is being displayed
-          title: "Science Building",
-          headerTransparent: true,
-          headerBackImage: () => <Icon name="arrow-back" color="#97282C" />,
-        }}
-      />
-      <Stack.Screen name="Search" component={SearchScreen} />
     </Stack.Navigator>
   );
 }
