@@ -49,11 +49,11 @@ export default function mapScreen({ navigation }) {
   let room;
 
   // Top left corner coordinates
-  const absLat = 42.937858;
-  const absLon = -85.593565;
+  const absLat = 42.937977;
+  const absLon = -85.593391;
   // Bottom right corner coordinates
-  const maxLat = 42.926166;
-  const maxLon = -85.570076;
+  const maxLat = 42.926229;
+  const maxLon = -85.570385;
 
   const buildings = [
     {
@@ -66,9 +66,12 @@ export default function mapScreen({ navigation }) {
     },
     // TODO: Continue this
   ];
-
+  const [counter, setCounter] = useState(0);
   // Fuzzy search parse function
   async function parse(input) {
+    console.log("------ New Fetch ---------", counter)
+    setCounter(counter + 1)
+
     const options = {
       includeScore: true,
       keys: ['name', 'code'],
@@ -101,9 +104,10 @@ export default function mapScreen({ navigation }) {
     )
       .then((response) => response.json())
       .then((json) => {
+        console.log("JSON Data", json)
         setRoomData(json);
       })
-      .then(console.log(roomData))
+      .then(console.log("Room Data", roomData))
       .then(console.log(coordToPixel(roomData.lat, roomData.lon)))
       .then(() => {
         let coords = coordToPixel(roomData.lat, roomData.lon);
@@ -218,7 +222,7 @@ export default function mapScreen({ navigation }) {
               <Pressable
                 style={[
                   styles.waypoint,
-                  { marginTop: waypointY, marginLeft: waypointX },
+                  { marginTop: waypointY - 64, marginLeft: waypointX - 32 }, // Waypoint locations offset by icon size
                 ]}
                 onPress={() => navigation.navigate('Interior', 'SB')}
               >
@@ -230,8 +234,8 @@ export default function mapScreen({ navigation }) {
                 style={[
                   styles.dot,
                   {
-                    marginTop: pointY,
-                    marginLeft: pointX,
+                    marginTop: pointY - 10, // pointY offest by image size
+                    marginLeft: pointX - 10, // pointX offest by image size
                     transform: [{ rotateZ: String(heading) + 'deg' }],
                   },
                 ]}
