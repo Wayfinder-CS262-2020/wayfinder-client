@@ -1,9 +1,8 @@
-import React from 'react'
-import { globalStyles } from '../styles/global'
+import React from "react";
+import { globalStyles } from "../styles/global";
 import { capitalize, Input } from "@material-ui/core";
 import { Navigation } from "@material-ui/icons";
-import React, {useState} from "react";
-import { globalStyles } from "../styles/global";
+import { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -12,24 +11,23 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
-  Alert
+  Alert,
 } from "react-native";
 import { TouchableHighlight } from "react-native-gesture-handler";
 
 //eslint ignore
-<link rel="stylesheet" href="https://use.typekit.net/spw7ajb.css"></link>
+<link rel="stylesheet" href="https://use.typekit.net/spw7ajb.css"></link>;
 
 export default function LoginScreen({ navigation }) {
-
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   checkCredentials = () => {
     let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|([a-z]+[0-9]+)@calvin.edu)$/;
-    if (re.test(username) && password != ''){
-      navigation.navigate('Map');
-    }else{
-      Alert.alert('Error', 'Invalid credentials', [
-        {text: 'Okay', onPress: () => {} }
+    if (re.test(username) && password != "") {
+      navigation.navigate("Map");
+    } else {
+      Alert.alert("Error", "Invalid credentials", [
+        { text: "Okay", onPress: () => {} },
       ]);
     }
   };
@@ -39,7 +37,7 @@ export default function LoginScreen({ navigation }) {
     <ScrollView style={styles.container}>
       <View style={styles.centereverything}>
         <Image
-          source={require('../assets/wayfinder-logo.png')}
+          source={require("../assets/wayfinder-logo.png")}
           style={styles.image}
         />
         <Text style={styles.text}>Wayfinder</Text>
@@ -50,7 +48,7 @@ export default function LoginScreen({ navigation }) {
             style={globalStyles.input}
             placeholder="Username or u@Calvin"
             placeholderTextColor="#C4C4C4"
-            onChangeText={text => setUsername(text)}
+            onChangeText={(text) => setUsername(text)}
             value={username}
           ></TextInput>
         </View>
@@ -61,7 +59,7 @@ export default function LoginScreen({ navigation }) {
             style={globalStyles.input}
             placeholder="Password"
             placeholderTextColor="#C4C4C4"
-            onChangeText={text => setPassword(text)}
+            onChangeText={(text) => setPassword(text)}
             value={password}
             secureTextEntry={true}
           ></TextInput>
@@ -85,20 +83,20 @@ export default function LoginScreen({ navigation }) {
         </View>
       </View>
     </ScrollView>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#2D2D2D',
+    backgroundColor: "#2D2D2D",
     // position: "absolute",
     flex: 1,
     // justifyContent: "center",
     // alignItems: "center",
   },
   centereverything: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   image: {
     width: 4156 * 0.03,
@@ -107,27 +105,27 @@ const styles = StyleSheet.create({
     marginTop: 80,
   },
   text: {
-    color: '#CBCBCB',
+    color: "#CBCBCB",
     fontSize: 50,
-    fontFamily: 'lusitana-bold',
-    fontWeight: '400',
+    fontFamily: "lusitana-bold",
+    fontWeight: "400",
   },
 
   uname: {
-    backgroundColor: '#2D2D2D',
-    alignItems: 'center',
-    color: '#C4C4C4',
+    backgroundColor: "#2D2D2D",
+    alignItems: "center",
+    color: "#C4C4C4",
     marginTop: 50,
   },
   pswd: {
-    backgroundColor: '#2D2D2D',
-    alignItems: 'center',
+    backgroundColor: "#2D2D2D",
+    alignItems: "center",
   },
   loginbutton: {
-    backgroundColor: '#f0cb02',
+    backgroundColor: "#f0cb02",
     borderWidth: 1,
     borderRadius: 35,
-    borderColor: '#f0cb02',
+    borderColor: "#f0cb02",
     maxWidth: 275,
     minWidth: 275,
     marginTop: 20,
@@ -137,22 +135,22 @@ const styles = StyleSheet.create({
   },
   logintext: {
     fontSize: 18,
-    color: '#2D2D2D',
-    width: '100%',
+    color: "#2D2D2D",
+    width: "100%",
   },
   loginview: {
-    backgroundColor: '#2D2D2D',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#2D2D2D",
+    alignItems: "center",
+    justifyContent: "center",
   },
   guest: {
     marginTop: 10,
   },
   guestbutton: {
-    backgroundColor: '#2D2D2D',
+    backgroundColor: "#2D2D2D",
     paddingStart: 10,
   },
   guesttext: {
-    color: '#CBCBCB',
+    color: "#CBCBCB",
   },
-})
+});
