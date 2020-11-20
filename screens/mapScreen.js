@@ -98,10 +98,10 @@ export default function mapScreen({ navigation }) {
     }
     debug && console.log(endURL);
 
-    // await fetch("https://wayfinder-service.herokuapp.com/" + endURL)
-    await fetch(
-      'https://wayfinder-de-sb-coordin-ndr6ow.herokuapp.com/' + endURL
-    )
+    await fetch("https://wayfinder-service.herokuapp.com/" + endURL)
+      // await fetch(
+      //   'https://wayfinder-de-sb-coordin-ndr6ow.herokuapp.com/' + endURL
+      // )
       .then((response) => response.json())
       .then((json) => {
         console.log("JSON Data", json)
