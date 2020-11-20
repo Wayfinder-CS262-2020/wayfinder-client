@@ -87,11 +87,14 @@ export default function mapScreen({ navigation }) {
     } else {
       endURL = "room/" + building + "+" + room;
     }
-    fetch("https://wayfinder-service.herokuapp.com/" + endURL)
+    debug && console.log(endURL);
+
+    await fetch("https://wayfinder-service.herokuapp.com/" + endURL)
       .then((response) => response.json())
       .then((json) => {
         setRoomData(json);
       })
+      // .then(console.log(roomData))
       .then(() => {
         let coords = coordToPixel(roomData.coordinatesy, roomData.coordinatesx);
         setWaypointX(coords.x);
@@ -147,11 +150,9 @@ export default function mapScreen({ navigation }) {
   function coordToPixel(latPos, longPos) {
     const relLat = Math.abs(latPos - absLat);
     const relLong = pos.coords.longitude - longPos;
-    retX = (relLat * imageWidth) / Math.abs(absLon - maxLon);
-    retY = (relLong * imageHeight) / Math.abs(absLat - maxLat);
     return {
-      y: retX,
-      x: retY,
+      y: (relLat * imageWidth) / Math.abs(absLon - maxLon),
+      x: (relLong * imageHeight) / Math.abs(absLat - maxLat),
     };
   }
 
