@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import calvinmap from "../assets/calvin-map-01.jpg";
+import React, { useState, useEffect } from 'react';
+import calvinmap from '../assets/calvin-map-01.jpg';
 import {
   StyleSheet,
   View,
@@ -10,11 +10,11 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Alert,
-} from "react-native";
-import { Icon } from "react-native-elements";
-import ImageZoom from "react-native-image-pan-zoom";
-import Fuse from "fuse.js";
-import { DonutLarge } from "@material-ui/icons";
+} from 'react-native';
+import { Icon } from 'react-native-elements';
+import ImageZoom from 'react-native-image-pan-zoom';
+import Fuse from 'fuse.js';
+import { DonutLarge } from '@material-ui/icons';
 
 const imageWidth = 4285;
 const imageHeight = 3001;
@@ -33,11 +33,17 @@ export default function mapScreen({ navigation }) {
 
   const [isLoading, setLoading] = useState(false);
   const [heading, setHeading] = useState(0);
-  const [searchText, setSearchText] = useState("");
+  const [searchText, setSearchText] = useState('');
   const debug = false;
 
   // Database integration
-  const [roomData, setRoomData] = useState({ test: "test" });
+  const [roomData, setRoomData] = useState({
+    floornumber: -1,
+    interiorcoordinatesx: -100,
+    interiorcoordinatesy: -100,
+    lat: 0,
+    lon: 0,
+  });
 
   let building;
   let room;
@@ -51,12 +57,12 @@ export default function mapScreen({ navigation }) {
 
   const buildings = [
     {
-      name: "Science Building",
-      code: "SB",
+      name: 'Science Building',
+      code: 'SB',
     },
     {
-      name: "North Hall",
-      code: "NH",
+      name: 'North Hall',
+      code: 'NH',
     },
     // TODO: Continue this
   ];
@@ -65,7 +71,7 @@ export default function mapScreen({ navigation }) {
   async function parse(input) {
     const options = {
       includeScore: true,
-      keys: ["name", "code"],
+      keys: ['name', 'code'],
       threshold: 0.8,
     };
 
@@ -83,20 +89,24 @@ export default function mapScreen({ navigation }) {
 
     let endURL;
     if (room === undefined) {
-      endURL = "building/" + building;
+      endURL = 'building/' + building;
     } else {
-      endURL = "room/" + building + "+" + room;
+      endURL = 'room/' + building + '+' + room;
     }
     debug && console.log(endURL);
 
-    await fetch("https://wayfinder-service.herokuapp.com/" + endURL)
+    // await fetch("https://wayfinder-service.herokuapp.com/" + endURL)
+    await fetch(
+      'https://wayfinder-de-sb-coordin-ndr6ow.herokuapp.com/' + endURL
+    )
       .then((response) => response.json())
       .then((json) => {
         setRoomData(json);
       })
-      // .then(console.log(roomData))
+      .then(console.log(roomData))
+      .then(console.log(coordToPixel(roomData.lat, roomData.lon)))
       .then(() => {
-        let coords = coordToPixel(roomData.coordinatesy, roomData.coordinatesx);
+        let coords = coordToPixel(roomData.lat, roomData.lon);
         setWaypointX(coords.x);
         setWaypointY(coords.y);
       })
@@ -142,17 +152,17 @@ export default function mapScreen({ navigation }) {
         debug && console.log(pointY);
       } else {
         setLoading(false);
-        Alert.alert("Out of bounds.");
+        Alert.alert('Out of bounds.');
       }
     }
   }, [pos]);
 
   function coordToPixel(latPos, longPos) {
     const relLat = Math.abs(latPos - absLat);
-    const relLong = pos.coords.longitude - longPos;
+    const relLong = longPos - absLon;
     return {
-      y: (relLat * imageWidth) / Math.abs(absLon - maxLon),
-      x: (relLong * imageHeight) / Math.abs(absLat - maxLat),
+      y: ((relLat * imageHeight) / Math.abs(absLat - maxLat)),
+      x: ((relLong * imageWidth) / Math.abs(absLon - maxLon)),
     };
   }
 
@@ -164,76 +174,76 @@ export default function mapScreen({ navigation }) {
           <ActivityIndicator animating={true} />
         </View>
       ) : (
-        <View>
-          {/* Footer for search bar and buttons */}
-          <View style={styles.footer}>
-            {/* Search Bar */}
-            <TextInput
-              style={styles.searchBar}
-              placeholder="Enter a classroom..."
-              placeholderTextColor="#C4C4C4"
-              // eslint-disable-next-line no-return-assign
-              onChangeText={(text) => setSearchText(text)}
-            ></TextInput>
+          <View>
+            {/* Footer for search bar and buttons */}
+            <View style={styles.footer}>
+              {/* Search Bar */}
+              <TextInput
+                style={styles.searchBar}
+                placeholder="Enter a classroom..."
+                placeholderTextColor="#C4C4C4"
+                // eslint-disable-next-line no-return-assign
+                onChangeText={(text) => setSearchText(text)}
+              ></TextInput>
 
-            {/* Search Button */}
-            <TouchableOpacity
-              placeholder="Search"
-              style={styles.searchButton}
-              onPress={() =>
-                searchText === ""
-                  ? Alert.alert("Please enter search text!")
-                  : parse(searchText)
-              }
-            >
-              <Icon name="send" />
-            </TouchableOpacity>
-          </View>
-
-          {/* ImageZoom for the map background */}
-          <ImageZoom
-            cropWidth={Dimensions.get("window").width}
-            cropHeight={Dimensions.get("window").height}
-            imageWidth={imageWidth}
-            imageHeight={imageHeight}
-            panToMove={true}
-            pinchToZoom={true}
-            enableCenterFocus={false}
-            minScale={0.15}
-          >
-            {/* Main map */}
-            <Image style={styles.map} source={calvinmap} />
-
-            {/* Waypoint for Searched Waypoint */}
-            <Pressable
-              style={[
-                styles.waypoint,
-                { marginTop: waypointY, marginLeft: waypointX },
-              ]}
-              onPress={() => navigation.navigate("Interior", "SB")}
-            >
-              <Icon name="location-on" color="#F0CB02"></Icon>
-            </Pressable>
-
-            {/* User position (and heading) dot */}
-            <View
-              style={[
-                styles.dot,
-                {
-                  marginTop: pointY,
-                  marginLeft: pointX,
-                  transform: [{ rotateZ: String(heading) + "deg" }],
-                },
-              ]}
-            >
-              <Image
-                style={{ width: 20, height: 20 }}
-                source={require("../assets/wayfinder-logo-yellow.png")}
-              />
+              {/* Search Button */}
+              <TouchableOpacity
+                placeholder="Search"
+                style={styles.searchButton}
+                onPress={() =>
+                  searchText === ''
+                    ? Alert.alert('Please enter search text!')
+                    : parse(searchText)
+                }
+              >
+                <Icon name="send" />
+              </TouchableOpacity>
             </View>
-          </ImageZoom>
-        </View>
-      )}
+
+            {/* ImageZoom for the map background */}
+            <ImageZoom
+              cropWidth={Dimensions.get('window').width}
+              cropHeight={Dimensions.get('window').height}
+              imageWidth={imageWidth}
+              imageHeight={imageHeight}
+              panToMove={true}
+              pinchToZoom={true}
+              enableCenterFocus={false}
+              minScale={0.15}
+            >
+              {/* Main map */}
+              <Image style={styles.map} source={calvinmap} />
+
+              {/* Waypoint for Searched Waypoint */}
+              <Pressable
+                style={[
+                  styles.waypoint,
+                  { marginTop: waypointY, marginLeft: waypointX },
+                ]}
+                onPress={() => navigation.navigate('Interior', 'SB')}
+              >
+                <Icon name="location-on" size={64} color="#F0CB02"></Icon>
+              </Pressable>
+
+              {/* User position (and heading) dot */}
+              <View
+                style={[
+                  styles.dot,
+                  {
+                    marginTop: pointY,
+                    marginLeft: pointX,
+                    transform: [{ rotateZ: String(heading) + 'deg' }],
+                  },
+                ]}
+              >
+                <Image
+                  style={{ width: 20, height: 20 }}
+                  source={require('../assets/wayfinder-logo-yellow.png')}
+                />
+              </View>
+            </ImageZoom>
+          </View>
+        )}
     </View>
   );
 }
@@ -241,16 +251,16 @@ export default function mapScreen({ navigation }) {
 const styles = StyleSheet.create({
   main: {
     flex: 1,
-    flexDirection: "row",
-    alignContent: "space-around",
-    backgroundColor: "#FFFFFF",
+    flexDirection: 'row',
+    alignContent: 'space-around',
+    backgroundColor: '#FFFFFF',
   },
   imageViewWrapper: {
     flex: 1,
-    resizeMode: "cover",
-    justifyContent: "center",
-    width: "100%",
-    height: "100%",
+    resizeMode: 'cover',
+    justifyContent: 'center',
+    width: '100%',
+    height: '100%',
   },
   map: {
     width: imageWidth * 1,
@@ -258,9 +268,8 @@ const styles = StyleSheet.create({
     zIndex: 0,
   },
   waypoint: {
-    width: 220 * 1.2,
-    height: 170 * 1.2,
-    position: "absolute",
+
+    position: 'absolute',
     // fontSize: 20,
   },
   sb: {
@@ -271,25 +280,25 @@ const styles = StyleSheet.create({
   dot: {
     width: 20,
     height: 20,
-    position: "absolute",
+    position: 'absolute',
   },
   footer: {
-    backgroundColor: "#2D2D2D",
-    color: "#2D2D2D",
+    backgroundColor: '#2D2D2D',
+    color: '#2D2D2D',
     // marginTop: Dimensions.get("window").height * -0.06,
     // marginLeft: Dimensions.get("window").width * 2,
     bottom: 0,
     zIndex: 5,
-    position: "absolute",
-    maxWidth: "100%",
-    minWidth: "100%",
-    justifyContent: "flex-start",
-    flexDirection: "row",
+    position: 'absolute',
+    maxWidth: '100%',
+    minWidth: '100%',
+    justifyContent: 'flex-start',
+    flexDirection: 'row',
   },
   searchBar: {
     borderRadius: 35,
-    borderColor: "#C4C4C4",
-    backgroundColor: "#2D2D2D",
+    borderColor: '#C4C4C4',
+    backgroundColor: '#2D2D2D',
     borderWidth: 1,
     paddingHorizontal: 30,
     maxWidth: 220,
@@ -298,19 +307,19 @@ const styles = StyleSheet.create({
     maxHeight: 40,
     fontSize: 16,
     // eslint-disable-next-line no-dupe-keys
-    backgroundColor: "#2D2D2D",
+    backgroundColor: '#2D2D2D',
     marginTop: 25,
     marginBottom: 25,
     marginHorizontal: 10,
     // paddingTop: 5,
     // paddingBottom: 5,
-    color: "#C4C4C4",
+    color: '#C4C4C4',
   },
   searchButton: {
-    backgroundColor: "#f0cb02",
+    backgroundColor: '#f0cb02',
     borderWidth: 1,
     borderRadius: 35,
-    borderColor: "#f0cb02",
+    borderColor: '#f0cb02',
     maxWidth: 100,
     minWidth: 100,
     marginTop: 25,
@@ -321,6 +330,6 @@ const styles = StyleSheet.create({
     // paddingStart: 116,
   },
   waypointMarker: {
-    color: "#F0CB02",
+    color: '#F0CB02',
   },
 });

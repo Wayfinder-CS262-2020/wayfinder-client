@@ -27,6 +27,16 @@ export default function HomeStack() {
           headerShown: false,
         }}
       />
+      <Stack.Screen
+        name="Interior"
+        component={InteriorScreen}
+        options={{
+          // TODO: Get title to update dynamically with whatever building is being displayed
+          title: "Science Building",
+          headerTransparent: true,
+          headerBackImage: () => <Icon name="arrow-back" color="#97282C" />,
+        }}
+      />
     </Stack.Navigator>
   );
 }
