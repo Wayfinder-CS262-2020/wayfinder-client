@@ -1,8 +1,5 @@
 import React from "react";
-import {
-  createStackNavigator,
-  HeaderBackground,
-} from "@react-navigation/stack";
+import { createStackNavigator } from "@react-navigation/stack";
 
 import LoginScreen from "../screens/loginScreen";
 import MapScreen from "../screens/mapScreen";
