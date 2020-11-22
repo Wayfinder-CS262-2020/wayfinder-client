@@ -107,16 +107,15 @@ export default function mapScreen({ navigation }) {
         console.log("JSON Data", json)
         setRoomData(json);
       })
-      .then(console.log("Room Data", roomData))
-      .then(console.log(coordToPixel(roomData.lat, roomData.lon)))
-      .then(() => {
-        let coords = coordToPixel(roomData.lat, roomData.lon);
-        setWaypointX(coords.x);
-        setWaypointY(coords.y);
-      })
       .catch((error) => console.error(error))
       .finally(() => setLoading(false));
   }
+
+  useEffect(() => {
+    let coords = coordToPixel(roomData.lat, roomData.lon);
+    setWaypointX(coords.x);
+    setWaypointY(coords.y);
+  })
 
   // Location
   useEffect(() => {
