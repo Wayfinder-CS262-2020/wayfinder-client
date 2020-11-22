@@ -2,11 +2,11 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import LoginScreen from "../screens/loginScreen";
-import MapScreen from "../screens/mapScreen";
 import InteriorScreen from "../screens/interiorScreen";
 
-import { Button } from "react-native";
+import { Text } from "react-native";
 import { Icon } from "react-native-elements";
+import MapScreen from "../screens/mapScreen";
 
 const Stack = createStackNavigator();
 export default function HomeStack() {
@@ -30,12 +30,20 @@ export default function HomeStack() {
       <Stack.Screen
         name="Interior"
         component={InteriorScreen}
-        options={{
-          // TODO: Get title to update dynamically with whatever building is being displayed
-          title: "Science Building",
-          headerTransparent: true,
-          headerBackImage: () => <Icon name="arrow-back" color="#97282C" />,
-        }}
+        options={({ route }) => ({
+          headerStyle: { backgroundColor: "#2D2D2D" },
+          headerBackImage: () => (
+            <Icon name="keyboard-arrow-left" size={32} color="white" />
+          ),
+          headerTitle: (props) => (
+            <Text
+              {...props}
+              style={{ color: "white", fontWeight: "bold", fontSize: 18 }}
+            >
+              {route.params.name} Room {route.params.room}
+            </Text>
+          ),
+        })}
       />
     </Stack.Navigator>
   );
