@@ -15,7 +15,6 @@ import {
 import { Icon } from "react-native-elements";
 import ImageZoom from "react-native-image-pan-zoom";
 import Fuse from "fuse.js";
-import { DonutLarge } from "@material-ui/icons";
 
 const imageWidth = 4285;
 const imageHeight = 3001;
@@ -38,7 +37,7 @@ export default function mapScreen({ navigation }) {
 
   const [buildingName, setBuildingName] = useState("Default");
   const [buildingCode, setBuildingCode] = useState("NAN");
-  const [roomNumber, setRoomNumber] = useState(-1);
+  const [roomNumber, setRoomNumber] = useState();
   const debug = false;
 
   // Database integration
@@ -223,6 +222,7 @@ export default function mapScreen({ navigation }) {
             pinchToZoom={true}
             enableCenterFocus={false}
             minScale={0.15}
+            centerOn={{ x: 1100, y: -300, scale: 0.3, duration: 2 }}
           >
             {/* Main map */}
             <Image style={styles.map} source={calvinmap} />

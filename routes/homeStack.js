@@ -40,7 +40,10 @@ export default function HomeStack() {
               {...props}
               style={{ color: "white", fontWeight: "bold", fontSize: 18 }}
             >
-              {route.params.name} Room {route.params.room}
+              {route.params.name}{" "}
+              {route.params.room === undefined
+                ? ""
+                : "Room " + route.params.room}
             </Text>
           ),
         })}

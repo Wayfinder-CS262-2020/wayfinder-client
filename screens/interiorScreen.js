@@ -21,7 +21,7 @@ export default function interiorScreen(navigation, route) {
     let floorInt = Number(floorStr);
     floorInt += 1;
     const newFloor = buildingCode + floorInt;
-    if (newFloor in assets) {
+    if (newFloor in assets[buildingCode]) {
       setCurrentFloor(newFloor);
     }
   };
@@ -33,7 +33,7 @@ export default function interiorScreen(navigation, route) {
     let floorInt = Number(floorStr);
     floorInt -= 1;
     const newFloor = buildingCode + floorInt;
-    if (newFloor in assets) {
+    if (newFloor in assets[buildingCode]) {
       setCurrentFloor(newFloor);
     }
   };
@@ -49,6 +49,7 @@ export default function interiorScreen(navigation, route) {
         pinchToZoom={true}
         enableCenterFocus={false}
         minScale={0.15}
+        centerOn={{ x: 0, y: 0, scale: 0.15, duration: 2 }}
       >
         <Image source={assets[buildingCode][currentFloor]} />
         <View>
@@ -69,6 +70,9 @@ export default function interiorScreen(navigation, route) {
 
       {/* Buttons for up/down floor */}
       <View style={styles.buttonContainer}>
+        <View style={styles.chipContainer}>
+          <Text style={styles.chip}>Floor: {currentFloor[2]}</Text>
+        </View>
         <View style={styles.button}>
           <TouchableOpacity onPress={() => goUp()}>
             <Icon name="keyboard-arrow-up" />
@@ -110,5 +114,18 @@ const styles = StyleSheet.create({
     marginTop: 15,
     paddingTop: 10,
     paddingBottom: 15,
+  },
+  chipContainer: {
+    borderRadius: 30,
+    width: 80,
+    height: 32,
+    backgroundColor: "#2D2D2D",
+    top: 122,
+    right: 100,
+  },
+  chip: {
+    color: "white",
+    padding: 5,
+    paddingLeft: 12,
   },
 });
