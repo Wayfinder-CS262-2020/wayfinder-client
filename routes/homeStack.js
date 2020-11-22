@@ -33,8 +33,10 @@ export default function HomeStack() {
         options={{
           // TODO: Get title to update dynamically with whatever building is being displayed
           title: "Science Building",
-          headerTransparent: true,
-          headerBackImage: () => <Icon name="arrow-back" color="#97282C" />,
+          headerStyle: { backgroundColor: "#2D2D2D" },
+          headerBackImage: () => (
+            <Icon name="keyboard-arrow-left" size={30} color="#FFFFFF" />
+          ),
         }}
       />
     </Stack.Navigator>
