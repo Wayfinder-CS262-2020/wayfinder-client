@@ -20,44 +20,25 @@ const imageWidth = 4285;
 const imageHeight = 3001;
 
 export default function mapScreen({ navigation }) {
-  // FYI, I had to wrap the ImageZoom in an ImageBackground to be able to
-  // render things on top of it. The ScrollView is so the input/search box doesn't hike up the map
+  const [isLoading, setLoading] = useState(false);
+
+  // User posiiton
   const [pos, setPos] = useState({});
   const [posAvailable, setPosAvailable] = useState(false);
-  // User posiiton
   const [pointX, setPointX] = useState(-100);
   const [pointY, setPointY] = useState(-100);
+  const [heading, setHeading] = useState(0);
+
   // Searched waypoint marker
   const [waypointX, setWaypointX] = useState(-100);
   const [waypointY, setWaypointY] = useState(-100);
 
-  const [isLoading, setLoading] = useState(false);
-  const [heading, setHeading] = useState(0);
+  // Search and building info
   const [searchText, setSearchText] = useState("");
-
   const [buildingName, setBuildingName] = useState("Default");
   const [buildingCode, setBuildingCode] = useState("NAN");
   const [roomNumber, setRoomNumber] = useState();
   const debug = false;
-
-  // Database integration
-  const [roomData, setRoomData] = useState({
-    floornumber: -1,
-    interiorcoordinatesx: -100,
-    interiorcoordinatesy: -100,
-    lat: 0,
-    lon: 0,
-  });
-
-  let building;
-  let room;
-
-  // Top left corner coordinates
-  const absLat = 42.937977;
-  const absLon = -85.593391;
-  // Bottom right corner coordinates
-  const maxLat = 42.926229;
-  const maxLon = -85.570385;
 
   const buildings = [
     {
@@ -68,8 +49,37 @@ export default function mapScreen({ navigation }) {
       name: "North Hall",
       code: "NH",
     },
+    {
+      name: "Heimenga Hall",
+      code: "HH",
+    },
+    {
+      name: "Devies Hall",
+      code: "DH",
+    },
     // TODO: Continue this
   ];
+
+  // Data from the database
+  const [roomData, setRoomData] = useState({
+    floornumber: -1,
+    interiorcoordinatesx: -100,
+    interiorcoordinatesy: -100,
+    lat: 0,
+    lon: 0,
+  });
+
+  // for endURL
+  let building;
+  let room;
+
+  // Top left corner coordinates
+  const absLat = 42.937977;
+  const absLon = -85.593391;
+  // Bottom right corner coordinates
+  const maxLat = 42.926229;
+  const maxLon = -85.570385;
+
   const [counter, setCounter] = useState(0);
 
   // Fuzzy search parse function
@@ -98,6 +108,7 @@ export default function mapScreen({ navigation }) {
       setRoomNumber(room);
     }
 
+    // Dynamically (for building/building+room) fetch results from the database
     let endURL;
     if (room === undefined) {
       endURL = "building/" + building;
@@ -291,7 +302,6 @@ const styles = StyleSheet.create({
   },
   waypoint: {
     position: "absolute",
-    // fontSize: 20,
   },
   sb: {
     width: 220 * 1.02,

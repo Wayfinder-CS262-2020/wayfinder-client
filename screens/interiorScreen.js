@@ -10,8 +10,8 @@ const assets = require("../assets/assets.js");
 export default function interiorScreen(navigation, route) {
   const [currentFloor, setCurrentFloor] = useState("SB0");
 
+  // Route fix
   route = useRoute();
-
   const buildingCode = route.params.code;
 
   // Function to change map floor up
@@ -51,21 +51,23 @@ export default function interiorScreen(navigation, route) {
         minScale={0.15}
         centerOn={{ x: 0, y: 0, scale: 0.15, duration: 2 }}
       >
-        <Image source={assets[buildingCode][currentFloor]} />
-        <View>
-          <Icon
-            style={[
-              styles.waypoint,
-              {
-                // marginTop: route.params.xCoord - 64,
-                // marginLeft: route.params.yCoord - 32,
-              }, // Waypoint locations offset by icon size
-            ]}
-            name="location-on"
-            size={64}
-            color="#F0CB02"
-          ></Icon>
+        <View style={styles.chipContainer}>
+          <Text style={styles.chip}>CHIP!: {currentFloor[2]}</Text>
         </View>
+        <Icon
+          style={[
+            styles.waypoint,
+            {
+              // marginTop: route.params.xCoord - 64,
+              // marginLeft: route.params.yCoord - 32,
+            }, // Waypoint locations offset by icon size
+          ]}
+          name="location-on"
+          size={64}
+          // color="#F0CB02"
+          color="#fff"
+        ></Icon>
+        <Image source={assets[buildingCode][currentFloor]} />
       </ImageZoom>
 
       {/* Buttons for up/down floor */}
@@ -126,6 +128,6 @@ const styles = StyleSheet.create({
   chip: {
     color: "white",
     padding: 5,
-    paddingLeft: 12,
+    paddingLeft: 15,
   },
 });
