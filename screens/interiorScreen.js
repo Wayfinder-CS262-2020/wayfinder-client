@@ -51,23 +51,21 @@ export default function interiorScreen(navigation, route) {
         minScale={0.15}
         centerOn={{ x: 0, y: 0, scale: 0.15, duration: 2 }}
       >
-        <View style={styles.chipContainer}>
-          <Text style={styles.chip}>CHIP!: {currentFloor[2]}</Text>
-        </View>
+        <Image source={assets[buildingCode][currentFloor]} />
+        {/* Waypoint Marker: Not working */}
         <Icon
           style={[
             styles.waypoint,
             {
+              // When this works, will have to add error handling for when it's not avaialbe
               // marginTop: route.params.xCoord - 64,
               // marginLeft: route.params.yCoord - 32,
             }, // Waypoint locations offset by icon size
           ]}
           name="location-on"
           size={64}
-          // color="#F0CB02"
-          color="#fff"
+          color="#F0CB02"
         ></Icon>
-        <Image source={assets[buildingCode][currentFloor]} />
       </ImageZoom>
 
       {/* Buttons for up/down floor */}
@@ -75,11 +73,15 @@ export default function interiorScreen(navigation, route) {
         <View style={styles.chipContainer}>
           <Text style={styles.chip}>Floor: {currentFloor[2]}</Text>
         </View>
+
+        {/* Up button */}
         <View style={styles.button}>
           <TouchableOpacity onPress={() => goUp()}>
             <Icon name="keyboard-arrow-up" />
           </TouchableOpacity>
         </View>
+
+        {/* Down button */}
         <View style={styles.button}>
           <TouchableOpacity onPress={() => goDown()}>
             <Icon name="keyboard-arrow-down" />
@@ -102,7 +104,6 @@ const styles = StyleSheet.create({
   buttonContainer: {
     marginLeft: Dimensions.get("window").width * 0.8,
     marginTop: Dimensions.get("window").height * 0.7,
-    // flexDirection: "row",
     justifyContent: "space-around",
     position: "absolute",
   },
