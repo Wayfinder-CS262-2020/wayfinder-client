@@ -175,7 +175,8 @@ export default function mapScreen({ navigation }) {
         debug && console.log(pointY);
       } else {
         setLoading(false);
-        Alert.alert("Out of bounds.");
+        console.log("Out of bounds!!!");
+        // Alert.alert("Out of bounds.");
       }
     }
   }, [pos]);

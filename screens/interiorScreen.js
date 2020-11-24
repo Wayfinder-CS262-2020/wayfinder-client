@@ -1,5 +1,12 @@
-import React, { useState } from "react";
-import { StyleSheet, View, Image, Dimensions, Text } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  StyleSheet,
+  View,
+  Image,
+  Dimensions,
+  Text,
+  Pressable,
+} from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import ImageZoom from "react-native-image-pan-zoom";
 import { Icon } from "react-native-elements";
@@ -8,7 +15,7 @@ import { useRoute } from "@react-navigation/native";
 const assets = require("../assets/assets.js");
 
 export default function interiorScreen(navigation, route) {
-  const [currentFloor, setCurrentFloor] = useState("SB0");
+  const [currentFloor, setCurrentFloor] = useState("SB1");
 
   // Route fix
   route = useRoute();
@@ -37,6 +44,12 @@ export default function interiorScreen(navigation, route) {
       setCurrentFloor(newFloor);
     }
   };
+  useEffect(() => {
+    console.log(currentFloor.substring(2, 3));
+    console.log(route.params.floor);
+    console.log(route.params.floor <= parseInt(currentFloor.substring(2, 3)));
+  });
+  console.log(route.params.xCoord - 64, route.params.yCoord - 32);
   return (
     // Main interior screen
     <View style={styles.main}>
@@ -52,20 +65,21 @@ export default function interiorScreen(navigation, route) {
         centerOn={{ x: 0, y: 0, scale: 0.15, duration: 2 }}
       >
         <Image source={assets[buildingCode][currentFloor]} />
-        {/* Waypoint Marker: Not working */}
-        <Icon
-          style={[
-            styles.waypoint,
-            {
-              // When this works, will have to add error handling for when it's not avaialbe
-              // marginTop: route.params.xCoord - 64,
-              // marginLeft: route.params.yCoord - 32,
-            }, // Waypoint locations offset by icon size
-          ]}
-          name="location-on"
-          size={64}
-          color="#F0CB02"
-        ></Icon>
+
+        {/* Waypoint Marker*/}
+        {route.params.floor == currentFloor.substring(2, 3) && (
+          <Pressable
+            style={[
+              styles.waypoint,
+              {
+                top: route.params.yCoord - 256,
+                left: route.params.xCoord - 256 / 2,
+              }, // Waypoint locations offset by icon size
+            ]}
+          >
+            <Icon name="location-on" size={256} color="#F0CB02"></Icon>
+          </Pressable>
+        )}
       </ImageZoom>
 
       {/* Buttons for up/down floor */}
@@ -75,16 +89,34 @@ export default function interiorScreen(navigation, route) {
         </View>
 
         {/* Up button */}
+        {/* <View style={styles.button, route.params.floor <= parseInt(currentFloor.substring(2, 3)) ? styles.dark : styles.light}> */}
         <View style={styles.button}>
           <TouchableOpacity onPress={() => goUp()}>
-            <Icon name="keyboard-arrow-up" />
+            <Icon
+              size={32}
+              color={
+                route.params.floor <= parseInt(currentFloor.substring(2, 3))
+                  ? "black"
+                  : "red"
+              }
+              name="keyboard-arrow-up"
+            />
           </TouchableOpacity>
         </View>
 
         {/* Down button */}
+        {/* <View style={styles.button, currentFloor >= currentFloor.substring(2, 3) ? styles.dark : styles.light}> */}
         <View style={styles.button}>
           <TouchableOpacity onPress={() => goDown()}>
-            <Icon name="keyboard-arrow-down" />
+            <Icon
+              size={32}
+              color={
+                route.params.floor >= parseInt(currentFloor.substring(2, 3))
+                  ? "black"
+                  : "red"
+              }
+              name="keyboard-arrow-down"
+            />
           </TouchableOpacity>
         </View>
       </View>
@@ -103,8 +135,8 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     marginLeft: Dimensions.get("window").width * 0.8,
-    marginTop: Dimensions.get("window").height * 0.7,
-    justifyContent: "space-around",
+    marginTop: Dimensions.get("window").height * 0.65,
+    // justifyContent: "space-around",
     position: "absolute",
   },
   button: {
@@ -112,23 +144,48 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     borderRadius: 50,
     borderColor: "#f0cb02",
+    height: 50,
+    width: 50,
+    marginTop: 15,
+    paddingTop: 9,
+    paddingBottom: 4,
+  },
+  chipContainer: {
+    borderRadius: 50,
+    width: 100,
+    height: 50,
+    backgroundColor: "#2D2D2D",
+    top: 140,
+    right: 120,
+    marginBottom: 10,
+  },
+  chip: {
+    // justify: "center",
+    color: "white",
+    padding: 14,
+    paddingLeft: 20,
+    fontSize: 17,
+  },
+  dark: {
+    borderWidth: 0,
+    borderRadius: 50,
+    borderColor: "#f0cb02",
     maxWidth: 50,
     minWidth: 50,
     marginTop: 15,
-    paddingTop: 10,
-    paddingBottom: 15,
+    paddingTop: 12,
+    paddingBottom: 12,
+    backgroundColor: "#665600",
   },
-  chipContainer: {
-    borderRadius: 30,
-    width: 80,
-    height: 32,
-    backgroundColor: "#2D2D2D",
-    top: 122,
-    right: 100,
-  },
-  chip: {
-    color: "white",
-    padding: 5,
-    paddingLeft: 15,
+  light: {
+    borderWidth: 0,
+    borderRadius: 50,
+    borderColor: "#f0cb02",
+    maxWidth: 50,
+    minWidth: 50,
+    marginTop: 15,
+    paddingTop: 12,
+    paddingBottom: 12,
+    backgroundColor: "#f0cb02",
   },
 });
