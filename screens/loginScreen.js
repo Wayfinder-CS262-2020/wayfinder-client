@@ -21,19 +21,19 @@ import { TouchableHighlight } from "react-native-gesture-handler";
 export default function LoginScreen({ navigation }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  checkCredentials = () => {
+  const checkCredentials = () => {
     let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|([a-z]+[0-9]+)@calvin.edu)$/;
     // .endsWith makes sure it's a calivn email
     if (
       (re.test(username) &&
         password != "" &&
         username.endsWith("@calvin.edu")) ||
-        username.endsWith("@students.calvin.edu")
+      username.endsWith("@students.calvin.edu")
     ) {
       navigation.navigate("Map");
     } else {
       Alert.alert("Error", "Invalid credentials", [
-        { text: "Okay", onPress: () => {} },
+        { text: "Okay", onPress: () => { } },
       ]);
     }
   };
@@ -83,12 +83,12 @@ export default function LoginScreen({ navigation }) {
 
         {/* guest login */}
         <View style={styles.guest}>
-          <TouchableOpacity style={styles.guestbutton}>
+          <TouchableOpacity style={styles.guestbutton} onPress={() => navigation.navigate("Map")}>
             <Text style={styles.guesttext}>Continue as guest</Text>
           </TouchableOpacity>
         </View>
       </View>
-    </ScrollView>
+    </ScrollView >
   );
 }
 
