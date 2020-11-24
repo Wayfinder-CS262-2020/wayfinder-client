@@ -23,7 +23,13 @@ export default function LoginScreen({ navigation }) {
   const [password, setPassword] = useState("");
   checkCredentials = () => {
     let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|([a-z]+[0-9]+)@calvin.edu)$/;
-    if (re.test(username) && password != "") {
+    // .endsWith makes sure it's a calivn email
+    if (
+      (re.test(username) &&
+        password != "" &&
+        username.endsWith("@calvin.edu")) ||
+        username.endsWith("@students.calvin.edu")
+    ) {
       navigation.navigate("Map");
     } else {
       Alert.alert("Error", "Invalid credentials", [
