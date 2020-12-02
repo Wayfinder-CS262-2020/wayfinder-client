@@ -30,10 +30,22 @@ export default function LoginScreen({ navigation }) {
         username.endsWith("@calvin.edu")) ||
       username.endsWith("@students.calvin.edu")
     ) {
-      navigation.navigate("Map");
+      // Credentials ok
+      const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: username, password: password }),
+      };
+      fetch(
+        "https://wayfinder-service.herokuapp.com/auth/login/",
+        requestOptions
+      )
+        .then((response) => response.json())
+        .then((data) => this.setState({ postId: data.id }))
+        .then(navigation.navigate("Map"));
     } else {
       Alert.alert("Error", "Invalid credentials", [
-        { text: "Okay", onPress: () => { } },
+        { text: "Okay", onPress: () => {} },
       ]);
     }
   };
@@ -41,6 +53,7 @@ export default function LoginScreen({ navigation }) {
   return (
     /* Background */
     <ScrollView style={styles.container}>
+      {/* Wayfinder Logo */}
       <View style={styles.centereverything}>
         <Image
           source={require("../assets/wayfinder-logo.png")}
@@ -81,24 +94,30 @@ export default function LoginScreen({ navigation }) {
           </TouchableOpacity>
         </View>
 
-        {/* guest login */}
+        {/* Guest Login / Sign Up */}
         <View style={styles.guest}>
-          <TouchableOpacity style={styles.guestbutton} onPress={() => navigation.navigate("Map")}>
+          <TouchableOpacity
+            style={styles.guestbutton}
+            onPress={() => navigation.navigate("Map")}
+          >
             <Text style={styles.guesttext}>Continue as guest</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.signUpButton}
+            onPress={() => navigation.navigate("Sign Up")}
+          >
+            <Text style={styles.guesttext}>Sign Up</Text>
           </TouchableOpacity>
         </View>
       </View>
-    </ScrollView >
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#2D2D2D",
-    // position: "absolute",
     flex: 1,
-    // justifyContent: "center",
-    // alignItems: "center",
   },
   centereverything: {
     justifyContent: "center",
@@ -116,7 +135,6 @@ const styles = StyleSheet.create({
     fontFamily: "lusitana-bold",
     fontWeight: "400",
   },
-
   uname: {
     backgroundColor: "#2D2D2D",
     alignItems: "center",
@@ -150,13 +168,17 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   guest: {
-    marginTop: 10,
+    marginTop: 20,
+    display: "flex",
+    flexDirection: "row",
   },
   guestbutton: {
     backgroundColor: "#2D2D2D",
-    paddingStart: 10,
   },
   guesttext: {
-    color: "#CBCBCB",
+    color: "#f0cb02",
+  },
+  signUpButton: {
+    paddingLeft: 85,
   },
 });
