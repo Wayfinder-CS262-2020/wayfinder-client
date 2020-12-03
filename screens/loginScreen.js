@@ -31,7 +31,7 @@ export default function LoginScreen({ navigation }) {
       username.endsWith("@students.calvin.edu")
     ) {
       // Credentials ok
-      const requestOptions = {
+      let requestOptions = {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: username, password: password }),
@@ -40,9 +40,18 @@ export default function LoginScreen({ navigation }) {
         "https://wayfinder-service.herokuapp.com/auth/login/",
         requestOptions
       )
-        .then((response) => response.json())
-        .then((data) => this.setState({ postId: data.id }))
-        .then(navigation.navigate("Map"));
+        .then((request) => request.json())
+        .then((data) => {
+          console.log(data);
+          if (data.accessToken !== undefined) {
+            navigation.navigate("Map");
+          }
+        })
+        .catch((err) =>
+          Alert.alert("Error", "Invalid credentials", [
+            { text: "Okay", onPress: () => {} },
+          ])
+        );
     } else {
       Alert.alert("Error", "Invalid credentials", [
         { text: "Okay", onPress: () => {} },
