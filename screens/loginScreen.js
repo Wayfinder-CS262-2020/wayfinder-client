@@ -53,15 +53,19 @@ export default function LoginScreen({ navigation }) {
           }
         })
         .catch((err) =>
-          Alert.alert("Error", "Invalid credentials (ERR)", [
-            { text: "Okay", onPress: () => {} },
-          ])
+          Alert.alert(
+            "Error",
+            "Invalid credentials: Have you made an account?",
+            [{ text: "Okay", onPress: () => {} }]
+          )
         );
     } else {
       setUsername(username.toLowerCase());
-      Alert.alert("Error", "Invalid credentials: possible mispelling", [
-        { text: "Okay", onPress: () => {} },
-      ]);
+      Alert.alert(
+        "Error",
+        "Invalid credentials: Invalid credentials: Make sure username is lowercase and of the format\nu##@calvin.edu or u##@students.calvin.edu",
+        [{ text: "Okay", onPress: () => {} }]
+      );
     }
   };
 

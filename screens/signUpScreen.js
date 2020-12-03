@@ -58,9 +58,11 @@ export default function SignUpScreen({ navigation }) {
         ]);
       }
     } else {
-      Alert.alert("Error", "Invalid credentials", [
-        { text: "Okay", onPress: () => {} },
-      ]);
+      Alert.alert(
+        "Error",
+        "Invalid credentials: Make sure username is lowercase and of the format\nu##@calvin.edu or u##@students.calvin.edu",
+        [{ text: "Okay", onPress: () => {} }]
+      );
     }
   };
 
