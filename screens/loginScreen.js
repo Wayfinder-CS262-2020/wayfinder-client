@@ -1,7 +1,5 @@
 import React from "react";
 import { globalStyles } from "../styles/global";
-import { capitalize, Input } from "@material-ui/core";
-import { Navigation } from "@material-ui/icons";
 import { useState } from "react";
 import {
   StyleSheet,
@@ -12,8 +10,10 @@ import {
   TouchableOpacity,
   ScrollView,
   Alert,
+  Pressable,
+  Dimensions,
 } from "react-native";
-import { TouchableHighlight } from "react-native-gesture-handler";
+import { Icon } from "react-native-elements";
 
 //eslint ignore
 <link rel="stylesheet" href="https://use.typekit.net/spw7ajb.css"></link>;
@@ -72,6 +72,12 @@ export default function LoginScreen({ navigation }) {
   return (
     /* Background */
     <ScrollView style={styles.container}>
+      {/* Info Button */}
+      <View style={styles.infoButtonContainer}>
+        <Pressable onPress={() => navigation.navigate("Info")}>
+          <Icon name="info" size={32} color="#F0CB02"></Icon>
+        </Pressable>
+      </View>
       {/* Wayfinder Logo */}
       <View style={styles.centereverything}>
         <Image
@@ -199,5 +205,12 @@ const styles = StyleSheet.create({
   },
   signUpButton: {
     paddingLeft: 85,
+  },
+  infoButtonContainer: {
+    alignContent: "flex-end",
+    position: "relative",
+    zIndex: 10,
+    top: Dimensions.get("window").height * 0.05,
+    marginLeft: Dimensions.get("window").width * 0.8,
   },
 });

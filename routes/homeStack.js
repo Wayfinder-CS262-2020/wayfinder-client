@@ -4,10 +4,11 @@ import { createStackNavigator } from "@react-navigation/stack";
 import LoginScreen from "../screens/loginScreen";
 import InteriorScreen from "../screens/interiorScreen";
 import SignUpScreen from "../screens/signUpScreen";
+import MapScreen from "../screens/mapScreen";
+import InfoScreen from "../screens/infoScreen";
 
 import { Text } from "react-native";
 import { Icon } from "react-native-elements";
-import MapScreen from "../screens/mapScreen";
 
 const Stack = createStackNavigator();
 export default function HomeStack() {
@@ -63,6 +64,24 @@ export default function HomeStack() {
               style={{ color: "white", fontWeight: "bold", fontSize: 18 }}
             >
               Sign Up
+            </Text>
+          ),
+        })}
+      />
+      <Stack.Screen
+        name="Info"
+        component={InfoScreen}
+        options={() => ({
+          headerStyle: { backgroundColor: "#2D2D2D" },
+          headerBackImage: () => (
+            <Icon name="keyboard-arrow-left" size={32} color="white" />
+          ),
+          headerTitle: (props) => (
+            <Text
+              {...props}
+              style={{ color: "white", fontWeight: "bold", fontSize: 18 }}
+            >
+              Info
             </Text>
           ),
         })}
