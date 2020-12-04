@@ -23,9 +23,10 @@ export default function SignUpScreen({ navigation }) {
   const [password, setPassword] = useState("");
   const [confPassword, setConfPassword] = useState("");
 
-  const checkCredentials = () => {
+  const checkCredentials = async () => {
     let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|([a-z]+[0-9]+)@calvin.edu)$/;
     // .endsWith makes sure it's a calivn email
+    setUsername(username.toLowerCase());
     if (
       (re.test(username) &&
         password != "" &&
@@ -39,9 +40,12 @@ export default function SignUpScreen({ navigation }) {
         const requestOptions = {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: username, password: password }),
+          body: JSON.stringify({
+            email: username.toLowerCase(),
+            password: password,
+          }),
         };
-        fetch(
+        await fetch(
           "https://wayfinder-service.herokuapp.com/auth/create/",
           requestOptions
         )
@@ -54,9 +58,11 @@ export default function SignUpScreen({ navigation }) {
         ]);
       }
     } else {
-      Alert.alert("Error", "Invalid credentials", [
-        { text: "Okay", onPress: () => {} },
-      ]);
+      Alert.alert(
+        "Error",
+        "Invalid credentials: Make sure username is lowercase and of the format\nu##@calvin.edu or u##@students.calvin.edu",
+        [{ text: "Okay", onPress: () => {} }]
+      );
     }
   };
 

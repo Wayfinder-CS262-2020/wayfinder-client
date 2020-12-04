@@ -21,7 +21,9 @@ import { TouchableHighlight } from "react-native-gesture-handler";
 export default function LoginScreen({ navigation }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const checkCredentials = () => {
+
+  const checkCredentials = async () => {
+    setUsername(username.toLowerCase());
     let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|([a-z]+[0-9]+)@calvin.edu)$/;
     // .endsWith makes sure it's a calivn email
     if (
@@ -34,9 +36,12 @@ export default function LoginScreen({ navigation }) {
       let requestOptions = {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: username, password: password }),
+        body: JSON.stringify({
+          email: username.toLowerCase(),
+          password: password,
+        }),
       };
-      fetch(
+      await fetch(
         "https://wayfinder-service.herokuapp.com/auth/login/",
         requestOptions
       )
@@ -48,14 +53,19 @@ export default function LoginScreen({ navigation }) {
           }
         })
         .catch((err) =>
-          Alert.alert("Error", "Invalid credentials", [
-            { text: "Okay", onPress: () => {} },
-          ])
+          Alert.alert(
+            "Error",
+            "Invalid credentials: Have you made an account?",
+            [{ text: "Okay", onPress: () => {} }]
+          )
         );
     } else {
-      Alert.alert("Error", "Invalid credentials", [
-        { text: "Okay", onPress: () => {} },
-      ]);
+      setUsername(username.toLowerCase());
+      Alert.alert(
+        "Error",
+        "Invalid credentials: Invalid credentials: Make sure username is lowercase and of the format\nu##@calvin.edu or u##@students.calvin.edu",
+        [{ text: "Okay", onPress: () => {} }]
+      );
     }
   };
 
