@@ -95,7 +95,7 @@ export default function mapScreen({ navigation }) {
     const options = {
       includeScore: true,
       keys: ["name", "code"],
-      threshold: 0.5,
+      threshold: 0.8,
     };
 
     const fuse = new Fuse(buildings, options);
@@ -180,7 +180,7 @@ export default function mapScreen({ navigation }) {
         debug && console.log(pointY);
       } else {
         setLoading(false);
-        console.log("Out of bounds!!!");
+        // console.log("Out of bounds!!!");
         // Alert.alert("Out of bounds.");
       }
     }
