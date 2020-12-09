@@ -58,6 +58,10 @@ export default function mapScreen({ navigation }) {
       name: "Devies Hall",
       code: "DH",
     },
+    {
+      name: "Spoelhof Center",
+      code: "SC",
+    },
     // TODO: Continue this
   ];
 
@@ -91,7 +95,7 @@ export default function mapScreen({ navigation }) {
     const options = {
       includeScore: true,
       keys: ["name", "code"],
-      threshold: 0.8,
+      threshold: 0.5,
     };
 
     const fuse = new Fuse(buildings, options);
