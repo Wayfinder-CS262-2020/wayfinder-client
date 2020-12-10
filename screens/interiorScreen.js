@@ -15,11 +15,13 @@ import { useRoute } from "@react-navigation/native";
 const assets = require("../assets/assets.js");
 
 export default function interiorScreen(navigation, route) {
-  const [currentFloor, setCurrentFloor] = useState("SB1");
-
   // Route fix
   route = useRoute();
   const buildingCode = route.params.code;
+  const [currentFloor, setCurrentFloor] = useState(
+    String(buildingCode) +
+      (route.params.floor !== undefined ? String(route.params.floor) : "1")
+  );
 
   // Function to change map floor up
   const goUp = function () {
@@ -30,6 +32,8 @@ export default function interiorScreen(navigation, route) {
     const newFloor = buildingCode + floorInt;
     if (newFloor in assets[buildingCode]) {
       setCurrentFloor(newFloor);
+    } else {
+      console.log("asset not found");
     }
   };
 

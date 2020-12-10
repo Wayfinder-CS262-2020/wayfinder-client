@@ -58,6 +58,10 @@ export default function mapScreen({ navigation }) {
       name: "Devies Hall",
       code: "DH",
     },
+    {
+      name: "Spoelhof Center",
+      code: "SC",
+    },
     // TODO: Continue this
   ];
 
@@ -176,7 +180,7 @@ export default function mapScreen({ navigation }) {
         debug && console.log(pointY);
       } else {
         setLoading(false);
-        console.log("Out of bounds!!!");
+        // console.log("Out of bounds!!!");
         // Alert.alert("Out of bounds.");
       }
     }
