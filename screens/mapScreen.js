@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import calvinmap from "../assets/calvin-map-01.jpg";
+import calvinmap from "../assets/calvin-map-01.png";
 import {
   StyleSheet,
   View,
@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Alert,
+  Text,
   Keyboard,
 } from "react-native";
 import { Icon } from "react-native-elements";
@@ -243,7 +244,10 @@ export default function mapScreen({ navigation }) {
             <Pressable
               style={[
                 styles.waypoint,
-                { marginTop: waypointY - 64, marginLeft: waypointX - 32 }, // Waypoint locations offset by icon size
+                {
+                  marginTop: waypointY - 64,
+                  marginLeft: waypointX - 40 - buildingName.length,
+                }, // Waypoint locations offset by icon size
               ]}
               onPress={() =>
                 navigation.navigate("Interior", {
@@ -256,6 +260,7 @@ export default function mapScreen({ navigation }) {
                 })
               }
             >
+              <Text style={{ color: "#fff" }}> {buildingName} </Text>
               <Icon name="location-on" size={64} color="#F0CB02"></Icon>
             </Pressable>
 
