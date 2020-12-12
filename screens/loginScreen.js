@@ -15,10 +15,11 @@ import {
 } from "react-native";
 import { Icon } from "react-native-elements";
 
-//eslint ignore
 <link rel="stylesheet" href="https://use.typekit.net/spw7ajb.css"></link>;
 
 export default function LoginScreen({ navigation }) {
+  const debug = false;
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -41,17 +42,22 @@ export default function LoginScreen({ navigation }) {
           password: password,
         }),
       };
+
+      // Fetch the login information from the service
       await fetch(
         "https://wayfinder-service.herokuapp.com/auth/login/",
         requestOptions
       )
         .then((request) => request.json())
+
+        // Log user in if they have a valid access token
         .then((data) => {
-          console.log(data);
+          debug && console.log(data);
           if (data.accessToken !== undefined) {
             navigation.navigate("Map");
           }
         })
+        // User does not have a valid access token
         .catch((err) =>
           Alert.alert(
             "Error",
@@ -60,6 +66,7 @@ export default function LoginScreen({ navigation }) {
           )
         );
     } else {
+      // User did not input a valid username/password
       setUsername(username.toLowerCase());
       Alert.alert(
         "Error",

@@ -15,9 +15,15 @@ import { useRoute } from "@react-navigation/native";
 const assets = require("../assets/assets.js");
 
 export default function interiorScreen(navigation, route) {
+  const debug = false;
+
   // Route fix
   route = useRoute();
+
+  // Grabe the building code from the provided pamrameters
   const buildingCode = route.params.code;
+
+  // Set the initial floor to the provided floor number if it exists, otherwise set it to 1
   const [currentFloor, setCurrentFloor] = useState(
     String(buildingCode) +
       (route.params.floor !== undefined ? String(route.params.floor) : "1")
@@ -48,12 +54,19 @@ export default function interiorScreen(navigation, route) {
       setCurrentFloor(newFloor);
     }
   };
-  useEffect(() => {
-    console.log(currentFloor.substring(2, 3));
-    console.log(route.params.floor);
-    console.log(route.params.floor <= parseInt(currentFloor.substring(2, 3)));
-  });
-  console.log(route.params.xCoord - 64, route.params.yCoord - 32);
+
+  debug &&
+    useEffect(() => {
+      debug && console.log(currentFloor.substring(2, 3));
+      debug && console.log(route.params.floor);
+      debug &&
+        console.log(
+          route.params.floor <= parseInt(currentFloor.substring(2, 3))
+        );
+    });
+
+  debug && console.log(route.params.xCoord - 64, route.params.yCoord - 32);
+
   return (
     // Main interior screen
     <View style={styles.main}>
@@ -93,7 +106,6 @@ export default function interiorScreen(navigation, route) {
         </View>
 
         {/* Up button */}
-        {/* <View style={styles.button, route.params.floor <= parseInt(currentFloor.substring(2, 3)) ? styles.dark : styles.light}> */}
         <View style={styles.button}>
           <TouchableOpacity onPress={() => goUp()}>
             <Icon
@@ -140,7 +152,6 @@ const styles = StyleSheet.create({
   buttonContainer: {
     marginLeft: Dimensions.get("window").width * 0.8,
     marginTop: Dimensions.get("window").height * 0.65,
-    // justifyContent: "space-around",
     position: "absolute",
   },
   button: {
@@ -164,7 +175,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   chip: {
-    // justify: "center",
     color: "white",
     padding: 14,
     paddingLeft: 20,
