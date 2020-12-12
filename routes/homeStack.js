@@ -13,6 +13,7 @@ import { Icon } from "react-native-elements";
 const Stack = createStackNavigator();
 export default function HomeStack() {
   return (
+    // Login Screen
     <Stack.Navigator>
       <Stack.Screen
         name="Login"
@@ -22,6 +23,8 @@ export default function HomeStack() {
           headerShown: false,
         }}
       />
+
+      {/* Map Screen */}
       <Stack.Screen
         name="Map"
         component={MapScreen}
@@ -29,6 +32,8 @@ export default function HomeStack() {
           headerShown: false,
         }}
       />
+
+      {/* Interior Screen */}
       <Stack.Screen
         name="Interior"
         component={InteriorScreen}
@@ -37,6 +42,7 @@ export default function HomeStack() {
           headerBackImage: () => (
             <Icon name="keyboard-arrow-left" size={32} color="white" />
           ),
+          // This code customizes the header to display the building/room
           headerTitle: (props) => (
             <Text
               {...props}
@@ -50,6 +56,8 @@ export default function HomeStack() {
           ),
         })}
       />
+
+      {/* Sign up screen */}
       <Stack.Screen
         name="Sign Up"
         component={SignUpScreen}
@@ -68,6 +76,8 @@ export default function HomeStack() {
           ),
         })}
       />
+
+      {/* Info Screen */}
       <Stack.Screen
         name="Info"
         component={InfoScreen}

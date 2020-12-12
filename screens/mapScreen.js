@@ -39,8 +39,10 @@ export default function mapScreen({ navigation }) {
   const [buildingName, setBuildingName] = useState("Default");
   const [buildingCode, setBuildingCode] = useState("NAN");
   const [roomNumber, setRoomNumber] = useState();
+
   const debug = false;
 
+  // This is what the fuzzy search looks for matches in
   const buildings = [
     {
       name: "Science Building",
@@ -62,7 +64,6 @@ export default function mapScreen({ navigation }) {
       name: "Spoelhof Center",
       code: "SC",
     },
-    // TODO: Continue this
   ];
 
   // Data from the database
@@ -85,12 +86,16 @@ export default function mapScreen({ navigation }) {
   const maxLat = 42.926229;
   const maxLon = -85.570385;
 
+  // Debug fetch counter
   const [counter, setCounter] = useState(0);
 
-  // Fuzzy search parse function
+  // Fuzzy search parse function.
+  // This function is called whenever the "Search" button is pressed on the map screen.
+  // It takes the input data and scrapes everything up until the first number to fuzzy search,
+  // then it fetches the building + room from the database and passes info to the interior screen if needed.
   async function parse(input) {
-    console.log("------ New Fetch ---------", counter);
-    setCounter(counter + 1);
+    debug && console.log("------ New Fetch ---------", counter);
+    debug && setCounter(counter + 1);
 
     const options = {
       includeScore: true,
@@ -101,12 +106,13 @@ export default function mapScreen({ navigation }) {
     const fuse = new Fuse(buildings, options);
     result = fuse.search(input);
 
-    console.log(result);
-    // console.log(result[0].item.code);
+    debug && console.log(result);
     building = result[0].item.code;
+
     setBuildingName(result[0].item.name);
     setBuildingCode(result[0].item.code);
 
+    // Get everything before the first digit
     let regex = /\d+/;
     if (input.match(regex)) {
       room = input.match(regex)[0];
@@ -120,6 +126,7 @@ export default function mapScreen({ navigation }) {
     } else {
       endURL = "room/" + building + "+" + room;
     }
+
     debug && console.log(endURL);
 
     await fetch("https://wayfinder-service.herokuapp.com/" + endURL)
@@ -128,14 +135,17 @@ export default function mapScreen({ navigation }) {
       // )
       .then((response) => response.json())
       .then((json) => {
-        console.log("JSON Data", json);
+        debug && console.log("JSON Data", json);
         setRoomData(json);
       })
       .catch((error) => console.error(error))
       .finally(() => setLoading(false));
+
+    // Dismiss the keyboard to provide more feedback and ease of use to the user
     Keyboard.dismiss();
   }
 
+  // Translate building latitude and longitude to pixel values
   useEffect(() => {
     let coords = coordToPixel(roomData.lat, roomData.lon);
     setWaypointX(coords.x);
@@ -160,9 +170,6 @@ export default function mapScreen({ navigation }) {
     );
 
     if (posAvailable) {
-      // let lat = 0.006500;
-      // let long = 0.006000;
-
       const lat = Math.abs(pos.coords.latitude - absLat);
       const long = pos.coords.longitude - absLon;
 
@@ -172,6 +179,7 @@ export default function mapScreen({ navigation }) {
         long >= 0 &&
         long <= Math.abs(absLon - maxLon)
       ) {
+        // User is within the bounds!
         setPointX((long * imageWidth) / Math.abs(absLon - maxLon));
         setPointY((lat * imageHeight) / Math.abs(absLat - maxLat));
         setLoading(false);
@@ -179,6 +187,7 @@ export default function mapScreen({ navigation }) {
         debug && console.log(pointX);
         debug && console.log(pointY);
       } else {
+        // User is out of bounds!
         setLoading(false);
         // console.log("Out of bounds!!!");
         // Alert.alert("Out of bounds.");
@@ -186,6 +195,8 @@ export default function mapScreen({ navigation }) {
     }
   }, [pos]);
 
+  // Function to translate latitude and longitude to pixel values on our map.
+  // Usees the pixel values defined at the top
   function coordToPixel(latPos, longPos) {
     const relLat = Math.abs(latPos - absLat);
     const relLong = longPos - absLon;
@@ -197,7 +208,6 @@ export default function mapScreen({ navigation }) {
 
   return (
     <View style={styles.main}>
-      {/* eslint-disable-next-line multiline-ternary */}
       {isLoading ? (
         <View>
           <ActivityIndicator animating={true} />
@@ -211,7 +221,6 @@ export default function mapScreen({ navigation }) {
               style={styles.searchBar}
               placeholder="Enter a classroom..."
               placeholderTextColor="#C4C4C4"
-              // eslint-disable-next-line no-return-assign
               onChangeText={(text) => setSearchText(text)}
             ></TextInput>
 
@@ -241,7 +250,7 @@ export default function mapScreen({ navigation }) {
             minScale={0.15}
             centerOn={{ x: 1100, y: -300, scale: 0.3, duration: 2 }}
           >
-            {/* Main map */}
+            {/* Main map image */}
             <Image style={styles.map} source={calvinmap} />
 
             {/* Waypoint for Searched Waypoint */}
@@ -313,11 +322,6 @@ const styles = StyleSheet.create({
   waypoint: {
     position: "absolute",
   },
-  sb: {
-    width: 220 * 1.02,
-    height: 170 * 1.02,
-    opacity: 0.5,
-  },
   dot: {
     width: 20,
     height: 20,
@@ -326,8 +330,6 @@ const styles = StyleSheet.create({
   footer: {
     backgroundColor: "#2D2D2D",
     color: "#2D2D2D",
-    // marginTop: Dimensions.get("window").height * -0.06,
-    // marginLeft: Dimensions.get("window").width * 2,
     bottom: 0,
     zIndex: 5,
     position: "absolute",
@@ -347,13 +349,10 @@ const styles = StyleSheet.create({
     minHeight: 40,
     maxHeight: 40,
     fontSize: 16,
-    // eslint-disable-next-line no-dupe-keys
     backgroundColor: "#2D2D2D",
     marginTop: 25,
     marginBottom: 25,
     marginHorizontal: 10,
-    // paddingTop: 5,
-    // paddingBottom: 5,
     color: "#C4C4C4",
   },
   searchButton: {
@@ -367,8 +366,6 @@ const styles = StyleSheet.create({
     marginBottom: 25,
     paddingTop: 7,
     marginHorizontal: 10,
-    // paddingBottom: 15,
-    // paddingStart: 116,
   },
   waypointMarker: {
     color: "#F0CB02",

@@ -1,7 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View, Image, ScrollView } from "react-native";
 
-//eslint ignore
 <link rel="stylesheet" href="https://use.typekit.net/spw7ajb.css"></link>;
 
 export default function InfoScreen({ navigation }) {

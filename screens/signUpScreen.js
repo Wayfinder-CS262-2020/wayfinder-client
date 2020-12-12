@@ -1,7 +1,5 @@
 import React from "react";
 import { globalStyles } from "../styles/global";
-import { capitalize, Input } from "@material-ui/core";
-import { Navigation } from "@material-ui/icons";
 import { useState } from "react";
 import {
   StyleSheet,
@@ -13,7 +11,6 @@ import {
   ScrollView,
   Alert,
 } from "react-native";
-import { TouchableHighlight } from "react-native-gesture-handler";
 
 //eslint ignore
 <link rel="stylesheet" href="https://use.typekit.net/spw7ajb.css"></link>;
